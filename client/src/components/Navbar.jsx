@@ -6,16 +6,30 @@ import { CustomNavbar, CustomSideBar } from "./../style/sidebar.style";
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import CloseIcon from '@mui/icons-material/Close';
 
+
+
 const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
     const pageList = [
         {
-            name: "Home Home Home",
+            name: "All",
             path: "/",
         },
         {
-            name: "Article Article",
+            name: "Art",
+            path: "/article",
+        },
+        {
+            name: "Business",
+            path: "/article",
+        },
+        {
+            name: "Interview",
+            path: "/article",
+        },
+        {
+            name: "Travel",
             path: "/article",
         },
     ]
@@ -24,15 +38,35 @@ const Navbar = () => {
 
     return (
         <CustomNavbar scroll_height={scrollHeight}>
-            <Toolbar>
+            <Toolbar className="justify-between">
                 <Typography variant="h5" component={Link} to="/">
                     LOGO
                 </Typography>
-                <Box className="ml-auto">
+
+                <List className="hidden lg:flex whitespace-nowrap">
+                    {
+                        pageList.map((page, i) => {
+                            return (
+                                <ListItem 
+                                    onClick={() => setIsSidebarOpen(false)}
+                                    button
+                                    component={Link}
+                                    to={page.path}
+                                    key={i}
+                                    sx={{ px: 3, color: "light.main" }}
+                                >
+                                    <ListItemText primary={page.name} />
+                                </ListItem>
+                            )
+                        })
+                    }
+                </List>
+
+                <Box>
                     <Button sx={{ mx: 2 }} variant="outlined" color="light"> LOGIN </Button>
                     <Button variant="outlined" color="light"> REGISTER </Button>
 
-                    <IconButton color="light" sx={{ ml: 3 }} onClick={() => setIsSidebarOpen(true)} >
+                    <IconButton className="inline lg:hidden" color="light" sx={{ ml: 2 }} onClick={() => setIsSidebarOpen(true)} >
                         <FormatAlignRightIcon />
                     </IconButton>
                 </Box>
@@ -42,7 +76,7 @@ const Navbar = () => {
                 open={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
             >
-                <CustomSideBar>
+                <CustomSideBar width={200}>
                     <IconButton sx={{ color: "light.main", ml: "auto", display: "block" }} onClick={() => setIsSidebarOpen(false)} >
                         <CloseIcon />
                     </IconButton>
