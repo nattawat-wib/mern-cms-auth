@@ -7,7 +7,8 @@ export const CustomNavbar = styled(AppBar)`
         background-color: transparent;
         box-shadow: none;
         ` : `
-        background-color: #212529;
+        background-color: rgba(33,37,41, .75);
+        backdrop-filter: blur(5px);
         box-shadow: 0 0 24px rgba(0,0,0,.52);
         `
     }

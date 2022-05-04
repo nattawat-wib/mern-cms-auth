@@ -4,7 +4,10 @@ import { main_theme } from "./style/theme"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Navbar from "./components/Navbar";
-import Index from "./pages/index";
+import Footer from "./components/Footer";
+import Index from "./pages/Index";
+import ArticleDetail from "./pages/ArticleDetail";
+import Search from "./pages/Search";
 
 function App() {
 	return (
@@ -13,9 +16,11 @@ function App() {
 				<BrowserRouter>
 					<Navbar />
 					<Routes>
-						{/* <Route element={} path="/"> </Route> */}
-						<Route element={<Index />} path="/"> </Route>
+						<Route element={<Index />} path="/" />
+						<Route element={<Search />} path="/:category" />
+						<Route element={<ArticleDetail />} path="/:category/:url" />
 					</Routes>
+					<Footer />
 				</BrowserRouter>
 			</ThemeProvider>
 		</StyledEngineProvider>

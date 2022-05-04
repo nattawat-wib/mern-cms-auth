@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { Toolbar, Box, List, Drawer, Divider, ListItem, Button, IconButton, Typography, ListItemText } from "@mui/material";
+import { Toolbar, Box, List, Drawer, Divider, ListItem, Button, IconButton, Typography, ListItemText, Switch } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { CustomNavbar, CustomSideBar } from "./../style/sidebar.style";
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import CloseIcon from '@mui/icons-material/Close';
-
-
+import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -47,7 +46,7 @@ const Navbar = () => {
                     {
                         pageList.map((page, i) => {
                             return (
-                                <ListItem 
+                                <ListItem
                                     onClick={() => setIsSidebarOpen(false)}
                                     button
                                     component={Link}
@@ -63,8 +62,12 @@ const Navbar = () => {
                 </List>
 
                 <Box>
-                    <Button sx={{ mx: 2 }} variant="outlined" color="light"> LOGIN </Button>
-                    <Button variant="outlined" color="light"> REGISTER </Button>
+                    {/* <Button sx={{ mx: 2 }} variant="outlined" color="light"> LOGIN </Button>
+                    <Button variant="outlined" color="light"> REGISTER </Button> */}
+                    <IconButton color="light">
+                        <SearchIcon />
+                    </IconButton>
+                    <Switch />
 
                     <IconButton className="inline lg:hidden" color="light" sx={{ ml: 2 }} onClick={() => setIsSidebarOpen(true)} >
                         <FormatAlignRightIcon />

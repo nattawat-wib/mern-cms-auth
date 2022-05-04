@@ -35,9 +35,7 @@ const MainTitle = styled(Typography)`
 
 const TabPanel = ({ value, index, children }) => {
     return (
-        <Box className="py-8"
-            hidden={value !== index}
-        >
+        <Box className="py-8" hidden={value !== index}>
             {children}
         </Box>
     )
