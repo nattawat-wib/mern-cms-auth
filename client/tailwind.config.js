@@ -6,13 +6,14 @@ module.exports = {
 		extend: {
 			colors: {
 				"primary-dark": "#023047",
-				primary: "#219EBC",
+				"primary": "#219EBC",
 				"primary-light": "#8ECAE6",
-				secondary: "#FFB703",
+				"secondary": "#FFB703",
 				"secondary-dark": "#FB8500",
-				light: "#fff"
+				"light": "#fff"
 			}
 		},
 	},
+	important: true,
 	plugins: [],
 }

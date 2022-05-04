@@ -16,7 +16,6 @@ function App() {
 						{/* <Route element={} path="/"> </Route> */}
 						<Route element={<Index />} path="/"> </Route>
 					</Routes>
-					<div style={{ height: "200vh" }}> </div>
 				</BrowserRouter>
 			</ThemeProvider>
 		</StyledEngineProvider>
