@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 const Search = () => {
     return(
         <main>
-            <h1> test </h1>
+            <h1> search </h1>
         </main>
     )
 }

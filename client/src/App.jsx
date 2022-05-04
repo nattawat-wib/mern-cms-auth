@@ -18,6 +18,7 @@ function App() {
 					<Routes>
 						<Route element={<Index />} path="/" />
 						<Route element={<Search />} path="/:category" />
+						<Route element={<ArticleDetail />} path="/search/:searchKey" />
 						<Route element={<ArticleDetail />} path="/:category/:url" />
 					</Routes>
 					<Footer />

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Toolbar, Box, List, Drawer, Divider, ListItem, Button, IconButton, Typography, ListItemText, Switch } from "@mui/material";
+import { Toolbar, Box, List, Drawer, ListItem, IconButton, Typography, ListItemText, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { CustomNavbar, CustomSideBar } from "./../style/sidebar.style";
@@ -8,8 +8,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
 
 const Navbar = () => {
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
+    const [searchKey, setSearchKey] = useState("");
     const pageList = [
         {
             name: "All",
@@ -62,17 +64,15 @@ const Navbar = () => {
                 </List>
 
                 <Box>
-                    {/* <Button sx={{ mx: 2 }} variant="outlined" color="light"> LOGIN </Button>
-                    <Button variant="outlined" color="light"> REGISTER </Button> */}
-                    <IconButton color="light">
+                    <IconButton color="light" onClick={() => setIsDialogOpen(true)}>
                         <SearchIcon />
                     </IconButton>
                     <Switch />
-
                     <IconButton className="inline lg:hidden" color="light" sx={{ ml: 2 }} onClick={() => setIsSidebarOpen(true)} >
                         <FormatAlignRightIcon />
                     </IconButton>
                 </Box>
+
             </Toolbar>
             <Drawer
                 anchor="right"
@@ -84,26 +84,32 @@ const Navbar = () => {
                         <CloseIcon />
                     </IconButton>
                     <List>
-                        {
-                            pageList.map((page, i) => {
-                                return (
-                                    <ListItem
-                                        onClick={() => setIsSidebarOpen(false)}
-                                        button
-                                        component={Link}
-                                        to={page.path}
-                                        key={i}
-                                        sx={{ px: 1, color: "light.main" }}
-                                    >
-                                        <ListItemText primary={page.name} />
-                                    </ListItem>
-                                )
-                            })
-                        }
+                        {pageList.map((page, i) => {
+                            return (
+                                <ListItem
+                                    onClick={() => setIsSidebarOpen(false)}
+                                    button
+                                    component={Link}
+                                    to={page.path}
+                                    key={i}
+                                    sx={{ px: 1, color: "light.main" }}
+                                >
+                                    <ListItemText primary={page.name} />
+                                </ListItem>
+                            )
+                        })}
                     </List>
-
                 </CustomSideBar>
             </Drawer>
+            <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} maxWidth={"lg"}>
+                <DialogContent>
+                    <TextField label="search" variant="standard" fullWidth/>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=> setIsDialogOpen(false)}> cancel </Button>
+                    <Button component={Link} to={`/search/${searchKey}`}> search </Button>
+                </DialogActions>
+            </Dialog>
         </CustomNavbar>
     )
 }
