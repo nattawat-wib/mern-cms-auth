@@ -7,7 +7,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Index from "./pages/Index";
 import ArticleDetail from "./pages/ArticleDetail";
-import Search from "./pages/Search";
+import Result from "./pages/Result";
 
 function App() {
 	return (
@@ -17,9 +17,9 @@ function App() {
 					<Navbar />
 					<Routes>
 						<Route element={<Index />} path="/" />
-						<Route element={<ArticleDetail />} path="/search/:searchKey" />
-						<Route element={<ArticleDetail />} path="/:category/:url" />
-						<Route element={<Search />} path="/:category" />
+						<Route element={<Result />} path="/article/:category" />
+						<Route element={<ArticleDetail />} path="/article/:category/:url" />
+						<Route element={<Result />} path="/search" />
 					</Routes>
 					<Footer />
 				</BrowserRouter>

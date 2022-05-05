@@ -13,7 +13,7 @@ const CardContent = styled(Paper)`
 const ArticleCard = () => {
     return (
         <article>
-            <Link to="/test-cate/test-url">
+            <Link to="/article/test-cate/test-url">
                 <figure className="relative rounded-md overflow-hidden" style={{ paddingTop: "75%" }}>
                     <img className="fit-img" src="https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp" alt="" />
                 </figure>
@@ -21,7 +21,7 @@ const ArticleCard = () => {
             <CardContent className="p-2">
                 <div className="flex justify-between items-center">
                     <Typography component="small" color="text.light" className="text-sm"> Business </Typography>
-                    <Button component={Link} to="/test-cate/test-url" size="small" className="text-sm"> read more... </Button>
+                    <Button component={Link} to="/article/test-cate/test-url" size="small" className="text-sm"> read more... </Button>
                 </div>
                 <Typography className="mb-3 line-clamp-4">
                     การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร

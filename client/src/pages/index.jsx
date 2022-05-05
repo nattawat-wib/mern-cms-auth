@@ -33,6 +33,12 @@ const MainTitle = styled(Typography)`
     margin: 1.5rem auto;
 `
 
+const TabsCenter = styled(Tabs)`
+    & .MuiTabs-flexContainer {
+        justify-content: center
+    }
+`
+
 const TabPanel = ({ value, index, children }) => {
     return (
         <Box className="py-8" hidden={value !== index}>
@@ -144,22 +150,22 @@ const Index = () => {
             <section>
                 <Container maxwith="lg">
                     <MainTitle component="span"> Lastest </MainTitle>
-                    <Tabs value={tabValue} onChange={handleTabChange} scrollButtons="auto" variant="scrollable">
+                    <TabsCenter value={tabValue} onChange={handleTabChange} scrollButtons="auto" variant="scrollable">
                         {
                             category_list.map((category, i) => {
                                 return (<Tab key={i} label={category} ></Tab>)
                             })
                         }
-                    </Tabs>
+                    </TabsCenter>
                     {
                         category_list.map((category, i) => {
                             return (
-                                <TabPanel value={tabValue} index={i}>
+                                <TabPanel value={tabValue} index={i} key={i}>
                                     <Grid container spacing={3}>
                                         {
                                             Array(10).fill(0).map((card, i) => {
                                                 return (
-                                                    <Grid item xs={12} sm={6} md={4}>
+                                                    <Grid key={i} item xs={12} sm={6} md={4}>
                                                         <ArticleCard />
                                                     </Grid>)
                                             })

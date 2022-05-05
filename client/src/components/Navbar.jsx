@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Toolbar, Box, List, Drawer, ListItem, IconButton, Typography, ListItemText, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
 import { CustomNavbar, CustomSideBar } from "./../style/sidebar.style";
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
@@ -12,33 +13,44 @@ const Navbar = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
     const [searchKey, setSearchKey] = useState("");
+    const navigate = useNavigate();
     const pageList = [
         {
             name: "All",
-            path: "/",
+            path: "/article/All",
         },
         {
             name: "Art",
-            path: "/article",
+            path: "/article/Art",
         },
         {
             name: "Business",
-            path: "/article",
+            path: "/article/Business",
         },
         {
             name: "Interview",
-            path: "/article",
+            path: "/article/Interview",
         },
         {
             name: "Travel",
-            path: "/article",
+            path: "/article/Travel",
         },
     ]
+
+    const handleSearchSubmit = e => {
+        e.preventDefault()
+        setIsDialogOpen(false);
+        setSearchKey("");
+
+        if(!searchKey) return  toast.error("search ต้องไม่เป็นค่าว่าง");
+        navigate(`/search?search=${searchKey}`)
+    }
 
     window.addEventListener("scroll", () => setScrollHeight(window.pageYOffset))
 
     return (
         <CustomNavbar scroll_height={scrollHeight}>
+            <Toaster toastOptions={{style: { zIndex: 99999999999, }}} />
             <Toolbar className="justify-between">
                 <Typography variant="h5" component={Link} to="/">
                     LOGO
@@ -102,13 +114,15 @@ const Navbar = () => {
                 </CustomSideBar>
             </Drawer>
             <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)} maxWidth={"lg"}>
-                <DialogContent>
-                    <TextField label="search" variant="standard" fullWidth/>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={()=> setIsDialogOpen(false)}> cancel </Button>
-                    <Button component={Link} to={`/search/${searchKey}`}> search </Button>
-                </DialogActions>
+                <form onSubmit={handleSearchSubmit}>
+                    <DialogContent>
+                        <TextField label="search" variant="standard" fullWidth onChange={e => setSearchKey(e.target.value)} />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setIsDialogOpen(false)}> cancel </Button>
+                        <Button type="submit"> search </Button>
+                    </DialogActions>
+                </form>
             </Dialog>
         </CustomNavbar>
     )
