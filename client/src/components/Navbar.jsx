@@ -17,7 +17,7 @@ const Navbar = () => {
     const pageList = [
         {
             name: "All",
-            path: "/article/All",
+            path: "/article",
         },
         {
             name: "Art",
