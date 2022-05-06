@@ -8,6 +8,10 @@ import ArticleDetail from "./pages/webpage/ArticleDetail";
 import Result from "./pages/webpage/Result";
 
 import Login from "./pages/controlpanel/Login";
+import ArticleAll from "./pages/controlpanel/ArticleAll";
+import AddArticle from "./pages/controlpanel/ArticleAdd";
+import AddMember from "./pages/controlpanel/AddMember";
+import ChangePassword from "./pages/controlpanel/ChangePassword";
 
 import ControlPanel from "./layout/ControlPanel";
 import Webpage from "./layout/Webpage";
@@ -33,6 +37,10 @@ function App() {
 						{/* CONTROL PANEL */}
 						<Route path="/cp" element={<ControlPanel />}>
 							<Route index element={<Login />} />
+							<Route path="article" element={<ArticleAll />} />
+							<Route path="article/add" element={<AddArticle />} />
+							<Route path="member/add" element={<AddMember />} />
+							<Route path="member/edit-password" element={<ChangePassword />} />
 						</Route>
 
 					</Routes>
