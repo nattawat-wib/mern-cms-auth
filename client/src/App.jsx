@@ -3,32 +3,39 @@ import { StyledEngineProvider } from "@mui/material";
 import { main_theme } from "./style/theme"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Index from "./pages/Index";
-import ArticleDetail from "./pages/ArticleDetail";
-import Result from "./pages/Result";
+import Index from "./pages/webpage/Index";
+import ArticleDetail from "./pages/webpage/ArticleDetail";
+import Result from "./pages/webpage/Result";
+
+import Login from "./pages/controlpanel/Login";
+
+import ControlPanel from "./layout/ControlPanel";
+import Webpage from "./layout/Webpage";
 
 function App() {
 	return (
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={main_theme}>
 				<BrowserRouter>
-					{/* <Routes>
-						<Route path={"/cp"} >
-						</Route>
-					</Routes> */}
-					<Navbar />
 					<Routes>
-						<Route index path="/" element={<Index />} />
 
-						<Route path="/article" element={<Result />} />
-						<Route path="/article/:category" element={<Result />} />
-						<Route path="/article/:category/:url" element={<ArticleDetail />} />
+						{/* WEPAGE */}
+						<Route path="/" element={<Webpage />} >
+							<Route index element={<Index />} />
 
-						<Route path="/search" element={<Result />} />
+							<Route path="article" element={<Result />} />
+							<Route path="article/:category" element={<Result />} />
+							<Route path="article/:category/:url" element={<ArticleDetail />} />
+
+							<Route path="search" element={<Result />} />
+						</Route>
+
+						{/* CONTROL PANEL */}
+						<Route path="/cp" element={<ControlPanel />}>
+							<Route index element={<Login />} />
+						</Route>
+
 					</Routes>
-					<Footer />
 				</BrowserRouter>
 			</ThemeProvider>
 		</StyledEngineProvider>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { Box, Typography, Grid, Container, Tab, Tabs } from "@mui/material";
-import ArticleCard from "../components/ArticleCard";
+import ArticleCard from "../../components/webpage/ArticleCard";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

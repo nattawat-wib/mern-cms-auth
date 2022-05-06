@@ -3,7 +3,7 @@ import { Toolbar, Box, List, Drawer, ListItem, IconButton, Typography, ListItemT
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 
-import { CustomNavbar, CustomSideBar } from "./../style/sidebar.style";
+import { CustomNavbar, CustomSideBar } from "./../../style/sidebar.style";
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';

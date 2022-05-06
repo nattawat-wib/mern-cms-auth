@@ -3,7 +3,7 @@ import { Typography, Box, Grid, Container } from "@mui/material";
 import styled from "styled-components";
 import { useParams, useSearchParams } from "react-router-dom";
 
-import ArticleCard from "../components/ArticleCard";
+import ArticleCard from "../../components/webpage/ArticleCard";
 
 const MainBanner = styled.section`
     background: center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp");
@@ -28,8 +28,8 @@ const Result = () => {
     const [ searchParams ] = useSearchParams();
     const search = searchParams.get("search");
 
-    console.log("category", category);
-    console.log("searchParams", searchParams.get("test"));
+    // console.log("category", category);
+    // console.log("searchParams", searchParams.get("test"));
 
     return (
         <Box component="main">
