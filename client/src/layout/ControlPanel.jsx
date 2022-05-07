@@ -28,8 +28,6 @@ const CardWrapper = styled.div`
 const ControlPanel = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    console.log(Outlet);
-
     return (
         <>
             <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />

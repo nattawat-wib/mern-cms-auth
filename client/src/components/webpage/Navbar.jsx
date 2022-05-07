@@ -42,7 +42,7 @@ const Navbar = () => {
         setIsDialogOpen(false);
         setSearchKey("");
 
-        if(!searchKey) return  toast.error("search ต้องไม่เป็นค่าว่าง");
+        if(!searchKey) return toast.error("search ต้องไม่เป็นค่าว่าง");
         navigate(`/search?search=${searchKey}`)
     }
 
