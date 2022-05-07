@@ -6,7 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const LoginBg = styled.main`
@@ -120,7 +120,7 @@ const Login = () => {
                                             isPasswordHidden ? 
                                             <VisibilityOffIcon color="light" />
                                             : 
-                                            <RemoveRedEyeIcon color="light" />
+                                            <VisibilityIcon color="light" />
                                         }
                                     </IconButton>
                                 </InputAdornment>

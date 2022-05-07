@@ -4,7 +4,7 @@ import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
-const handleAdornment = (handleFor, isPasswordHidden, setIsPasswordHidden) => {
+const handleInputAdornment = (handleFor, isPasswordHidden, setIsPasswordHidden) => {
     return (
         <InputAdornment position="start" >
             <IconButton
@@ -51,7 +51,7 @@ const ChangePassword = () => {
                             type={isPasswordHidden[input] ? "password" : "text"}
                             InputProps={{
                                 endAdornment: (
-                                    handleAdornment(input, isPasswordHidden, setIsPasswordHidden)
+                                    handleInputAdornment(input, isPasswordHidden, setIsPasswordHidden)
                                 )
                             }}
                             onChange={e => setForm({ ...form, [input]: e.target.value })}

@@ -34,9 +34,11 @@ function App() {
 							<Route path="search" element={<Result />} />
 						</Route>
 
+						<Route path="/cp" element={<Login />} />
+
 						{/* CONTROL PANEL */}
 						<Route path="/cp" element={<ControlPanel />}>
-							<Route index element={<Login />} />
+							{/* <Route index element={<Login />} /> */}
 							<Route path="article" element={<ArticleAll />} />
 							<Route path="article/add" element={<AddArticle />} />
 							<Route path="member/add" element={<AddMember />} />

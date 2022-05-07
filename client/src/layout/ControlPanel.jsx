@@ -25,8 +25,10 @@ const CardWrapper = styled.div`
     width: 100%;
 `
 
-const ControlPanel = prop => {
+const ControlPanel = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+    console.log(Outlet);
 
     return (
         <>
@@ -34,7 +36,6 @@ const ControlPanel = prop => {
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <PageWrapper is_sidebar_open={isSidebarOpen}>
                 <CardWrapper>
-                    {prop.children}
                     <Outlet />
                 </CardWrapper>
             </PageWrapper>
