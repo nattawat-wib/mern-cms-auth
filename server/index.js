@@ -6,6 +6,7 @@ const xss = require("xss-clean");
 const sanitize = require("express-mongo-sanitize");
 
 const memberRouter = require("./routes/memberRoute");
+const articleRouter = require("./routes/articleRoute");
 
 require("dotenv").config();
 require("./db");
@@ -21,6 +22,7 @@ app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
 
 app.use("/member", memberRouter);
+app.use("/article", articleRouter)
 
 app.listen(port, () => {
     console.log(`server start at port ${port}`);

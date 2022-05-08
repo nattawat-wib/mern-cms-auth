@@ -1,16 +1,39 @@
-import { Table, TableHead, TableBody, TableRow, TableCell, Button, Container, Typography } from "@mui/material";
+import { Table, TableHead, TableBody, TableRow, TableCell, Button, Container, Typography, Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styled from "styled-components";
-
-const rowList = [
-    { id: "1", firstname: "tset", lastname: "er", age: 19 },
-    { id: "2", firstname: "nutella", lastname: "tester", age: 24 },
-    { id: "3", firstname: "tset", lastname: "er", age: 24 },
-    { id: "4", firstname: "tset", lastname: "er", age: 24 },
-]
+import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const ArticleAll = () => {
+    const [articleList, setArticleList] = useState([]);
+    const [deleteArticleUrl, setDeleteArticleUrl] = useState();
+    const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+    useEffect(() => {
+        getArticle()
+    }, [])
+
+    const getArticle = () => {
+        axios.get(`${process.env.REACT_APP_BASE_API}/article`)
+            .then(resp => setArticleList(resp.data.data))
+            .catch(console.log)
+    }
+
+    const handleDeleteArticle = () => {
+        console.log(deleteArticleUrl);
+
+        axios.delete(`${process.env.REACT_APP_BASE_API}/article/${deleteArticleUrl}`)
+            .then(resp => {
+                getArticle()
+                setIsDialogOpen(false)
+                setDeleteArticleUrl("")
+                toast.success(resp.data.msg)
+            })
+            .catch(resp => toast.error(resp.response.data.msg));
+    }
+
     return (
         <>
             <Container maxWidth="lg">
@@ -20,23 +43,44 @@ const ArticleAll = () => {
                         <TableRow>
                             <TableCell> # </TableCell>
                             <TableCell align="right"> Title </TableCell>
-                            <TableCell align="right"> Post Date </TableCell>
                             <TableCell align="right"> Category </TableCell>
+                            <TableCell align="right"> Post Date </TableCell>
                             <TableCell align="right" sx={{ width: 300 }}> Action </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            rowList.map((row, i) => {
+                            articleList.map((article, i) => {
                                 return (
                                     <TableRow key={i}>
-                                        <TableCell> {row.id} </TableCell>
-                                        <TableCell align="right"> {row.firstname} </TableCell>
-                                        <TableCell align="right"> {row.lastname} </TableCell>
-                                        <TableCell align="right"> {row.age} </TableCell>
+                                        <TableCell> {i + 1} </TableCell>
+                                        <TableCell align="right"> {article.title} </TableCell>
+                                        <TableCell align="right"> {article.category} </TableCell>
+                                        <TableCell align="right"> {article.createdAtDateTime} </TableCell>
                                         <TableCell align="right">
-                                            <Button startIcon={<ModeEditOutlineIcon />} variant="contained" className="bg-secondary" color="secondary" size="small" sx={{mr: 2}}> Edit </Button>
-                                            <Button startIcon={<DeleteIcon />} variant="contained" className="bg-error" color="error" size="small"> Delete </Button>
+                                            <Button
+                                                startIcon={<ModeEditOutlineIcon />}
+                                                variant="contained"
+                                                className="bg-secondary"
+                                                color="secondary"
+                                                size="small"
+                                                sx={{ mr: 2 }}
+                                            >
+                                                Edit
+                                            </Button>
+                                            <Button
+                                                startIcon={<DeleteIcon />}
+                                                onClick={() => {
+                                                    setIsDialogOpen(true)
+                                                    setDeleteArticleUrl(article.url)
+                                                }}
+                                                variant="contained"
+                                                className="bg-error"
+                                                color="error"
+                                                size="small"
+                                            >
+                                                Delete
+                                            </Button>
                                         </TableCell>
                                     </TableRow>
                                 )
@@ -45,6 +89,19 @@ const ArticleAll = () => {
                     </TableBody>
                 </Table>
             </Container>
+
+            <Dialog open={isDialogOpen} onClose={() => setIsDialogOpen(false)}>
+                <DialogTitle>
+                    Delete this article ?
+                </DialogTitle>
+                <DialogContent>
+                    Are you sure ?
+                </DialogContent>
+                <DialogActions>
+                    <Button variant="contained" className="bg-primary" color="primary" onClick={() => setIsDialogOpen(false)}> CANCEL </Button>
+                    <Button variant="contained" className="bg-error" color="error" onClick={handleDeleteArticle}>  DELETE  </Button>
+                </DialogActions>
+            </Dialog>
         </>
     )
 }

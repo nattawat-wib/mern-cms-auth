@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { TextField, Select, MenuItem, Grid, Button } from "@mui/material";
+import { TextField, Select, MenuItem, Grid, Button, bottomNavigationClasses } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import styled from "styled-components";
 import toast, { Toaster } from "react-hot-toast";
-// import { InputLabel, FormControl } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AddArticle = () => {
-    const [form, setForm] = useState({});
+    const navigate = useNavigate();
+    const [form, setForm] = useState({
+        title: "",
+        ck: "",
+        url: "",
+        category: "",
+        thumbnail: "",
+        banner: ""
+    });
 
     const handleFormChange = e => {
         if (e.target.type === "file") {
@@ -18,15 +27,32 @@ const AddArticle = () => {
         } else {
             setForm({ ...form, [e.target.name]: e.target.value })
         }
-
-        console.log(form);
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        setForm({});
+        const formData = new FormData();
+        for (const key in form) {
+            formData.append(key, form[key]);
+        }
 
         console.log(form);
+
+        axios
+            .post(`${process.env.REACT_APP_BASE_API}/article`, formData)
+            .then(resp => {
+                setForm({
+                    title: "",
+                    ck: "",
+                    url: "",
+                    category: "",
+                    thumbnail: "",
+                    banner: ""
+                });
+                toast.success(resp.data.msg);
+                setTimeout(() => { navigate("/cp/article") }, 1500)
+            })
+            .catch(resp => toast.error(resp.response.data.msg))
     }
 
     return (
@@ -61,10 +87,10 @@ const AddArticle = () => {
                 <CKEditor
                     editor={ClassicEditor}
                     data="Description Here <br/><br/><br/><br/><br/>"
-                    value={form.ck || ""} onChange={(event, editor) => {
+                    value={form.desc || ""} onChange={(event, editor) => {
                         const data = editor.getData();
                         // console.log({ event, editor, data });
-                        setForm({ ...form, ck: data })
+                        setForm({ ...form, desc: data })
                     }}
                 />
 
