@@ -2,12 +2,6 @@ const Member = require("./../model/memberModel");
 const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
-    // console.log(jwt.decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M…wMDN9.XvrP1nDBnQv7c1xhj8f8ZgKispTyxwvDOACs4laVx6U'));
-    // console.log(req);
-    console.log(req.cookies);
-    console.log(req.header);
-    
-
     try {
         if(!req.body.username || !req.body.password || !req.body.passwordConfirm) {
             throw "username password and password confirm is not allow to be empty";
@@ -34,9 +28,47 @@ exports.register = async (req, res) => {
             data: newMember,
             token
         });
+
     } catch (err) {
         console.log(err);
         
+        res.status(400).json({
+            status: "error",
+            msg: err
+        })
+    }
+}
+
+exports.login = async (req, res) => {
+    // await Member.create({
+    //     username: "tester",
+    //     password: "123123",
+    //     passwordConfirm: "123123"
+    // })
+    
+    try {
+        if(!req.body.username || !req.body.password) {
+            throw "please enter username and password";
+        }
+
+        const existMember = await Member.findOne({ username: req.body.username });
+        if(!existMember) throw "username or password is not correct";
+        
+        const isPasswordCorrect = await existMember.isPasswordCorrect(req.body.password, existMember.password)
+        if(!isPasswordCorrect) throw "username or password is not correct";
+
+        const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
+
+        res.status(200).json({
+            status: "success",
+            msg: "login successfully",
+            data: existMember,
+            token
+        })        
+
+    } catch (err) {
+        console.log(err);
+
         res.status(400).json({
             status: "error",
             msg: err

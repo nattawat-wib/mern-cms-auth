@@ -1,9 +1,7 @@
 const router = require("express").Router();
 const memberController = require("../controller/memberController");
 
-// memberController.register()
-
-router.route("/")
-    .post(memberController.register)
+router.post("/register", memberController.register)
+router.post("/login", memberController.login)
 
 module.exports = router

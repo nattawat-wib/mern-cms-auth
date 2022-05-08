@@ -1,6 +1,7 @@
 import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import toast, { Toaster } from "react-hot-toast";
 
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -23,7 +24,15 @@ const PermanentSideBar = styled(Drawer)`
 
 const Sidebar = prop => {
     const { isSidebarOpen, setIsSidebarOpen } = prop;
+    const navigate = useNavigate()
     
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("member");
+        toast.success("Logout Successfully");
+        navigate("/cp");
+    }
+
     return (
         <PermanentSideBar
             variant="permanent"
@@ -31,6 +40,7 @@ const Sidebar = prop => {
             onClose={() => setIsSidebarOpen(false)}
             is_sidebar_open={isSidebarOpen.toString()}
         >
+            <Toaster />
             <Box className="flex items-center justify-center" sx={{ height: "80px" }}>
                 <h1> LOGO </h1>
             </Box>
@@ -62,7 +72,7 @@ const Sidebar = prop => {
                     </ListItemIcon>
                     <ListItemText primary="Change Password" />
                 </ListItem>
-                <ListItem className="px-1">
+                <ListItem className="px-1" onClick={handleLogout}>
                     <ListItemIcon>
                         <LogoutIcon />
                     </ListItemIcon>

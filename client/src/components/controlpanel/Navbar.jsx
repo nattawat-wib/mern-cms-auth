@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import toast, { Toaster } from "react-hot-toast";
 
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -19,9 +20,20 @@ const Navbar = prop => {
     const [dropdownParent, setDropdownParent] = useState(null);
     const open = Boolean(dropdownParent);
     const { isSidebarOpen, setIsSidebarOpen } = prop;
+    const navigate = useNavigate();
+
+    // console.log(prop.member);
+
+    const handleLogout = () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("member");
+        toast.success("Logout Successfully");
+        navigate("/cp");
+    }
 
     return (
         <AppBarLinear position="sticky" color="dark" is_sidebar_open={isSidebarOpen.toString()}>
+            <Toaster />
             <Toolbar className="justify-between" >
                 <IconButton edge="start" onClick={() => setIsSidebarOpen(isSidebarOpen ? false : true)}>
                     {
@@ -36,7 +48,7 @@ const Navbar = prop => {
                     color="light"
                     onClick={e => setDropdownParent(e.currentTarget)}
                 >
-                    Admin
+                    { prop.member ? prop.member.username : "" }
                 </Button>
 
                 <Menu
@@ -46,7 +58,7 @@ const Navbar = prop => {
                 >
                     <MenuItem onClick={() => setDropdownParent(null)} component={Link} to="/cp/member/add"> Add Member </MenuItem>
                     <MenuItem onClick={() => setDropdownParent(null)} component={Link} to="/cp/member/edit-password"> Change Password </MenuItem>
-                    <MenuItem> Logout </MenuItem>
+                    <MenuItem onClick={handleLogout}> Logout </MenuItem>
                 </Menu>
             </Toolbar>
         </AppBarLinear>

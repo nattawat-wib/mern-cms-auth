@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { TextField, IconButton, InputAdornment, Button } from "@mui/material";
-import toaster, { toast, Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -33,47 +33,59 @@ const AddMember = () => {
         password: true,
         passwordConfirm: true
     })
-    const [form, setForm] = useState({});
+    const [form, setForm] = useState({
+        username: "",
+        password: "",
+        passwordConfirm: ""
+    });
     const handleSubmit = e => {
         e.preventDefault()
 
+        // document.cookie = "test=abc"
+        // document.cookie = `referral_key=hello;max-age=604800;domain=example.com`
 
-        toast.promise(
-            // axios.post(`${process.env.REACT_APP_BASE_API}/member`, form)
-            axios.post(`/member`, form)
-                .then(resp => {
-                    console.log(resp);
+        // console.log(document.cookie);
 
-                    toast.dismiss();
-                    toast[resp.data.status](resp.data.msg);
+        // fetch(`${process.env.REACT_APP_BASE_API}/member`, {
+        //     method: 'POST', // or 'PUT'
+        //     // credentials: "include",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(form),
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log('Success:', data);
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error:', error);
+        //     });
 
-                    localStorage.setItem("token", resp.data.token);
+        // return
+
+        axios.post(`${process.env.REACT_APP_BASE_API}/member/register`, form)
+            .then(resp => {
+                toast.dismiss();
+                toast.success(resp.data.msg);
+                setForm({
+                    username: "",
+                    password: "",
+                    passwordConfirm: ""
                 })
-                .catch(resp => {
-                    toast[resp.response.data.status](resp.response.data.msg);
-                    localStorage.removeItem("token");
-                })
-            ,
-            {
-                loading: "loading",
-                success: data => {
-                    console.log("from success", data);
-                    return data
-                },
-                error: data => {
-                    console.log("from error", data);
-                    return data
-                },
-            }
-        )
+            })
+            .catch(resp => {
+                toast.error(resp.response.data.msg);
+            })
 
     }
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{ maxWidth: "800px", margin: "0 auto", display: "block" }}>
             <Toaster />
             <h1 className="text-4xl text-center mb-8"> Add Member </h1>
             <TextField
+                value={form.username}
                 label="Username"
                 name="Username"
                 className="mb-8"
@@ -82,6 +94,7 @@ const AddMember = () => {
             />
 
             <TextField
+                value={form.password}
                 label="Password"
                 name="Password"
                 className="mb-8"
@@ -94,6 +107,7 @@ const AddMember = () => {
             />
 
             <TextField
+                value={form.passwordConfirm}
                 label="Password Confirm"
                 name="Password Confirm"
                 className="mb-8"

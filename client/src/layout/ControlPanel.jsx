@@ -1,9 +1,10 @@
-import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import Sidebar from "./../components/controlpanel/Sidebar";
 import Navbar from "./../components/controlpanel/Navbar";
 import styled from "styled-components";
+// import jwt from "jsonwebtoken";
 
 const PageWrapper = styled(Box)`
     width: ${({ is_sidebar_open }) => JSON.parse(is_sidebar_open) ? "calc(100% - 250px)" : "calc(100% - 65px)"};
@@ -25,12 +26,30 @@ const CardWrapper = styled.div`
     width: 100%;
 `
 
+const isAuth = () => {
+    // jwt.verify("")
+    const token = localStorage.getItem("token");
+    // console.log(token);
+    
+    return token
+}
+
 const ControlPanel = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const navigate = useNavigate();
+    const [member, setMember] = useState();
+    
+    useEffect(() => {
+        if(isAuth()) {
+            setMember(JSON.parse(localStorage.getItem("member")))
+        } else {
+            navigate("/cp")
+        }
+    }, [])
 
     return (
         <>
-            <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+            <Navbar member={member} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <PageWrapper is_sidebar_open={isSidebarOpen}>
                 <CardWrapper>

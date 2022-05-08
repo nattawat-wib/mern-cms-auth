@@ -6,7 +6,7 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 const handleInputAdornment = (handleFor, isPasswordHidden, setIsPasswordHidden) => {
     return (
-        <InputAdornment position="start" >
+        <InputAdornment position="end" >
             <IconButton
                 onClick={() => {
                     setIsPasswordHidden({

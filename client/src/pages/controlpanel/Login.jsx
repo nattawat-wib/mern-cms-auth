@@ -1,13 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Typography, TextField, Button, IconButton } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import { Navigate } from "react-router-dom";
 
 const LoginBg = styled.main`
     display: flex;
@@ -68,12 +71,32 @@ const LoginButton = styled(Button)`
 const Login = () => {
     const [loginFrom, setLoginForm] = useState({})
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        if(localStorage.getItem("token")) navigate("/cp/article")
+    }, [])    
+
     const handleLogin = e => {
         e.preventDefault();
-        console.log("ee");
+        toast.loading("pending...");
 
-        if (!loginFrom.username || !loginFrom.password) return toast.error("username or password not allow to be empty");
-        toast.success("login successfully !!!")
+        axios.post(`${process.env.REACT_APP_BASE_API}/member/login`, loginFrom)
+            .then(resp => {
+                toast.dismiss();
+                localStorage.setItem("token", resp.data.token);
+                localStorage.setItem("member", JSON.stringify(resp.data.data));
+                toast.success(resp.data.msg);
+                setTimeout(() => {
+                    navigate("/cp/article");
+                }, 2000)
+            })
+            .catch(resp => {
+                toast.dismiss();
+                localStorage.removeItem("token");
+                localStorage.removeItem("member");
+                toast.error(resp.response.data.msg);
+            })
     }
 
     return (
@@ -104,7 +127,7 @@ const Login = () => {
                         onChange={e => setLoginForm({ ...loginFrom, password: e.target.value })}
                         variant="outlined"
                         color="light"
-                        sx={{ input: { color: '#fff' }}}
+                        sx={{ input: { color: '#fff' } }}
                         fullWidth
                         label="password"
                         InputProps={{
@@ -117,10 +140,10 @@ const Login = () => {
                                 <InputAdornment position="start">
                                     <IconButton onClick={() => setIsPasswordHidden(isPasswordHidden ? false : true)}>
                                         {
-                                            isPasswordHidden ? 
-                                            <VisibilityOffIcon color="light" />
-                                            : 
-                                            <VisibilityIcon color="light" />
+                                            isPasswordHidden ?
+                                                <VisibilityOffIcon color="light" />
+                                                :
+                                                <VisibilityIcon color="light" />
                                         }
                                     </IconButton>
                                 </InputAdornment>
