@@ -3,12 +3,17 @@ const articleController = require("./../controller/articleController");
 
 router.route("/")
     .get(articleController.gerAllArticle)
-    .post(
+    .patch(
         articleController.uploadArticleImage,
         articleController.addArticle
     )
 
-router.route("/:url")
+router.route("/:articleUrl")
+    .get(articleController.getArticle)
+    .patch(
+        articleController.uploadArticleImage,
+        articleController.editArticle
+    )
     .delete(articleController.deleteArticle)
 
 module.exports = router

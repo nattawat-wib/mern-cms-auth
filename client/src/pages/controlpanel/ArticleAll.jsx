@@ -3,6 +3,7 @@ import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import toast from "react-hot-toast";
 
@@ -22,9 +23,7 @@ const ArticleAll = () => {
     }
 
     const handleDeleteArticle = () => {
-        console.log(deleteArticleUrl);
-
-        axios.delete(`${process.env.REACT_APP_BASE_API}/article/${deleteArticleUrl}`)
+        axios.delete(`${process.env.REACT_APP_BASE_API}/article/${deleteArticleUrl.trim()}`)
             .then(resp => {
                 getArticle()
                 setIsDialogOpen(false)
@@ -65,6 +64,8 @@ const ArticleAll = () => {
                                                 color="secondary"
                                                 size="small"
                                                 sx={{ mr: 2 }}
+                                                component={Link}
+                                                to={`/cp/article/edit/${article.url}`}
                                             >
                                                 Edit
                                             </Button>
