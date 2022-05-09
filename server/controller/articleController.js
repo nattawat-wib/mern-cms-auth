@@ -113,9 +113,6 @@ exports.deleteArticle = async (req, res) => {
 }
 
 exports.editArticle = async (req, res) => {
-    console.log("req.body", req.body);
-    console.log(req.files);
-
     try {
         let errorString = "";
 

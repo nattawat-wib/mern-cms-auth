@@ -41,6 +41,8 @@ const AddArticle = () => {
         axios
             .post(`${process.env.REACT_APP_BASE_API}/article`, formData)
             .then(resp => {
+                console.log(resp);
+
                 setForm({
                     title: "",
                     desc: "",

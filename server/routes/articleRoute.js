@@ -3,7 +3,7 @@ const articleController = require("./../controller/articleController");
 
 router.route("/")
     .get(articleController.gerAllArticle)
-    .patch(
+    .post(
         articleController.uploadArticleImage,
         articleController.addArticle
     )
