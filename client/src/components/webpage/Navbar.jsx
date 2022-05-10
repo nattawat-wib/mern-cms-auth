@@ -21,19 +21,19 @@ const Navbar = () => {
         },
         {
             name: "Art",
-            path: "/article/art",
+            path: "/article/Art",
         },
         {
             name: "Business",
-            path: "/article/business",
+            path: "/article/Business",
         },
         {
             name: "Interview",
-            path: "/article/interview",
+            path: "/article/Interview",
         },
         {
             name: "Travel",
-            path: "/article/travel",
+            path: "/article/Travel",
         },
     ]
 

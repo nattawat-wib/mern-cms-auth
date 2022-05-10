@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import ArticleCard from "../../components/webpage/ArticleCard";
+import axios from "axios";
 
 const MainBanner = styled.section`
     background: center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp");
@@ -27,9 +28,13 @@ const Result = () => {
     const { category } = useParams();
     const [ searchParams ] = useSearchParams();
     const search = searchParams.get("search");
+    const [allArticle, setAllArticle] = useState([]);
 
-    // console.log("category", category);
-    // console.log("searchParams", searchParams.get("test"));
+    useEffect(() => {       
+        axios.get(`${process.env.REACT_APP_BASE_API}/article?category=${category}`)
+            .then(resp => setAllArticle(resp.data.data))
+            .catch(console.log)
+    }, [category])
 
     return (
         <Box component="main">
@@ -49,10 +54,10 @@ const Result = () => {
                 <Container className="my-12">
                     <Grid container spacing={3}>
                         {
-                            Array(10).fill(0).map((card, i) => {
+                            allArticle.map((article, i) => {
                                 return (
                                     <Grid key={i} item xs={12} sm={6} md={4}>
-                                        <ArticleCard />
+                                        <ArticleCard article={article} />
                                     </Grid>
                                 )
                             })

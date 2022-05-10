@@ -30,7 +30,7 @@ function App() {
 
 							<Route path="article" element={<Result />} />
 							<Route path="article/:category" element={<Result />} />
-							<Route path="article/:category/:url" element={<ArticleDetail />} />
+							<Route path="article/:category/:articleUrl" element={<ArticleDetail />} />
 
 							<Route path="search" element={<Result />} />
 						</Route>

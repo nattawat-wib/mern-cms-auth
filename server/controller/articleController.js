@@ -18,13 +18,23 @@ exports.uploadArticleImage = upload.fields([{ name: "banner" }, { name: "thumbna
 
 exports.gerAllArticle = async (req, res) => {
     try {
-        const allArticle = await Article.find();
+        const query = {};
+        if(req.query.category) {
+            query.category = req.query.category
+        }
+    
+        const allArticle = await Article.find(query);
 
+        console.log(req.query.category);
+        console.log(query);
+        console.log(allArticle);
+        
         res.status(200).json({
             status: "success",
             msg: "",
             data: allArticle
         })
+
     } catch (err) {
         res.status(400).json({
             status: "error",

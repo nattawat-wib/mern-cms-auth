@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Box, Typography, Grid, Container, Tab, Tabs } from "@mui/material";
 import ArticleCard from "../../components/webpage/ArticleCard";
+import axios from "axios";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -48,10 +49,10 @@ const TabPanel = ({ value, index, children }) => {
 }
 
 const Index = () => {
-    // const [slick, setSlick] = useState({ main: "", nav: "" });
     const [mainSlick, setMainSlick] = useState();
     const [navSlick, setNavSlick] = useState();
     const [tabValue, setTabValue] = useState(0);
+    const [allArticle, setAllArticle] = useState([]);
 
     const settings = {
         dots: false,
@@ -79,6 +80,12 @@ const Index = () => {
             }
         }
     ];
+
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_BASE_API}/article`)
+            .then(resp => setAllArticle(resp.data.data))
+            .catch(console.log)
+    }, [])
 
     const handleTabChange = (e, newValue) => setTabValue(newValue);
     const category_list = ["All", "Art", "Business", "Interview", "Travel"];
@@ -163,10 +170,10 @@ const Index = () => {
                                 <TabPanel value={tabValue} index={i} key={i}>
                                     <Grid container spacing={3}>
                                         {
-                                            Array(10).fill(0).map((card, i) => {
+                                            allArticle.map((article, i) => {
                                                 return (
                                                     <Grid key={i} item xs={12} sm={6} md={4}>
-                                                        <ArticleCard />
+                                                        <ArticleCard article={article} />
                                                     </Grid>)
                                             })
                                         }

@@ -10,26 +10,26 @@ const CardContent = styled(Paper)`
     width: 90%;
 `
 
-const ArticleCard = () => {
+const ArticleCard = ({ article }) => {    
     return (
         <article>
-            <Link to="/article/test-cate/test-url">
+            <Link to={`/article/test-cate/${article.url}`}>
                 <figure className="relative rounded-md overflow-hidden" style={{ paddingTop: "75%" }}>
-                    <img className="fit-img" src="https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp" alt="" />
+                    <img 
+                        className="fit-img" 
+                        src={article.thumbnail ? `${process.env.REACT_APP_BASE_API}/upload/${article.thumbnail}` : "https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp"} 
+                        alt="" />
                 </figure>
             </Link>
             <CardContent className="p-2">
                 <div className="flex justify-between items-center">
-                    <Typography component="small" color="text.light" className="text-sm"> Business </Typography>
-                    <Button component={Link} to="/article/test-cate/test-url" size="small" className="text-sm"> read more... </Button>
+                    <Typography component="small" color="text.light" className="text-sm"> {article.category} </Typography>
+                    <Button component={Link} to={`/article/test-cate/${article.url}`} size="small" className="text-sm"> read more... </Button>
                 </div>
-                <Typography className="mb-3 line-clamp-4">
-                    การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร
-                    การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร
-                    การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร การขยาย Chic Republic ของทายาทรุ่นสอง ด้วยเป้าหมายที่จะเป็นธุรกิจเฟอร์นิเจอร์ครบวงจร
-                </Typography>
+                <Typography component="span" color="text.dark"> {article.title} </Typography>
+                <Typography className="mb-3 line-clamp-4 text-sm font-light" dangerouslySetInnerHTML={{__html: article.desc}} />
                 <Typography align="center" color="text.light" className="text-xs truncate">
-                    เรื่อง รตา มนตรีวัตภาพ เธียรสิน สุวรรณรังสิกุล เรื่อง รตา มนตรีวัตภาพ เธียรสิน สุวรรณรังสิกุล
+                    Created at : {article.createdAtDateTime}
                 </Typography>
             </CardContent>
         </article>

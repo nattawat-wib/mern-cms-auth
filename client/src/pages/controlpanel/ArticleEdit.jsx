@@ -32,10 +32,15 @@ const AddArticle = () => {
                     thumbnail: resp.data.data.thumbnail,
                     banner: resp.data.data.banner
                 })
+                setTimeout(() => {
+                    console.log(form);
+                }, 5000)
             })
     }, [])
 
     const handleFormChange = e => {
+        console.log(form);
+        
         if (e.target.type === "file") {
             if (!e.target.files[0].type.startsWith("image")) return toast.error("file upload is allow only image");
             tempImage[e.target.name] = null
@@ -125,11 +130,12 @@ const AddArticle = () => {
 
                 <TextField value={form.title || ""} onChange={handleFormChange} name="title" variant="outlined" label="Title" size="small" fullWidth className="mb-8" />
 
-
                 <CKEditor
                     editor={ClassicEditor}
-                    data="Description Here <br/><br/><br/><br/><br/>"
-                    value={form.desc || ""} onChange={(event, editor) => {
+                    // data="Description Here <br/><br/><br/><br/><br/>"
+                    // data={form.desc}
+                    value={form.desc || ""} 
+                    onChange={(event, editor) => {
                         const data = editor.getData();
                         // console.log({ event, editor, data });
                         setForm({ ...form, desc: data })
