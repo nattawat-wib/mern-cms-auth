@@ -3,13 +3,14 @@ import styled from "styled-components";
 import { Box, Typography, Grid, Container, Tab, Tabs } from "@mui/material";
 import ArticleCard from "../../components/webpage/ArticleCard";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 const MainBanner = styled.section`
-    background: center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp");
+    background: center no-repeat url("${({ bg }) => bg ? `${process.env.REACT_APP_BASE_API}/upload/${bg}` : "https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp"}");
     height: ${(({ height }) => height)};
     position: relative;
     background-size: cover;
@@ -40,6 +41,7 @@ const TabsCenter = styled(Tabs)`
     }
 `
 
+
 const TabPanel = ({ value, index, children }) => {
     return (
         <Box className="py-8" hidden={value !== index}>
@@ -53,6 +55,7 @@ const Index = () => {
     const [navSlick, setNavSlick] = useState();
     const [tabValue, setTabValue] = useState(0);
     const [allArticle, setAllArticle] = useState([]);
+    const [randomArticle, setRandomArticle] = useState([]);
 
     const settings = {
         dots: false,
@@ -81,10 +84,27 @@ const Index = () => {
         }
     ];
 
+    const randomBgStyle = (p, bg) => {
+        return({
+            paddingTop: `${p}%`, 
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: `url("${bg ? `${process.env.REACT_APP_BASE_API}/upload/${bg.banner}` : "http://via.placeholder.com/500"}")`,
+            backgroundSize: "cover"
+        })
+    }
+    
+
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BASE_API}/article`)
             .then(resp => setAllArticle(resp.data.data))
             .catch(console.log)
+
+        axios.get(`${process.env.REACT_APP_BASE_API}/article/random`)
+            .then(resp => {                
+                setRandomArticle(resp.data.data)
+            })
+            .catch(console.log)            
     }, [])
 
     const handleTabChange = (e, newValue) => setTabValue(newValue);
@@ -98,12 +118,20 @@ const Index = () => {
                 ref={setMainSlick}
             >
                 {
-                    Array(5).fill(0).map((n, i) => {
+                    allArticle.map((article, i) => {
                         return (
-                            <MainBanner key={i} className="flex justify-center items-center text-right" height={"70vh"}>
-                                <Box className="text-center text-light relative z-10 px-3">
-                                    <Typography variant="h3" components="h2"> {i} The Cloud Coffee Club Issue 2 </Typography>
-                                    <p> นิตยสารกาแฟฉบับที่สอง มาในธีม ‘การหมัก’ พร้อมสุ่มแถมเมล็ดกาแฟชุดใหม่ หมักโดยโปรเซสเซอร์นักหมักมือฉมัง </p>
+                            <MainBanner key={i} className="flex justify-center items-center text-right" bg={article.banner} height={"70vh"}>
+                                <Box className="text-center text-light relative z-10 px-3" style={{ maxWidth: "600px" }}>
+                                    <Link to={`/article/${article.category}/${article.url}`}>
+                                        <Typography
+                                            className="line-clamp-1"
+                                            variant="h3"
+                                            components="h2"
+                                        >
+                                            {article.title}
+                                        </Typography>
+                                    </Link>
+                                    <p className="line-clamp-4" dangerouslySetInnerHTML={{ __html: article.desc }} />
                                     <small className="mt-3 block"> เรื่องและภาพ The Cloud </small>
                                 </Box>
                             </MainBanner>
@@ -121,11 +149,11 @@ const Index = () => {
             // ref={slk => setSlick({ ...slick, nav: slk })}
             >
                 {
-                    Array(5).fill(0).map((n, i) => {
+                    allArticle.map((article, i) => {
                         return (
-                            <MainBanner key={i} className="flex justify-center items-center" height={"30vh"}>
+                            <MainBanner key={i} className="flex justify-center items-center" bg={article.banner} height={"30vh"}>
                                 <Box className="text-center text-light relative z-10 px-3">
-                                    <p> {i}  นิตยสารกาแฟฉบับที่สอง มาในธีม ‘การหมัก’ พร้อมสุ่มแถมเมล็ดกาแฟชุดใหม่ หมักโดยโปรเซสเซอร์นักหมักมือฉมัง </p>
+                                    <p className="line-clamp-2"> {article.title} </p>
                                     <small className="mt-3 block"> เรื่องและภาพ The Cloud </small>
                                 </Box>
                             </MainBanner>
@@ -137,18 +165,18 @@ const Index = () => {
             <section>
                 <Grid container spacing={1} className="p-2 pb-0">
                     <Grid item xs={6}>
-                        <div style={{ paddingTop: "30%", background: 'center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp")' }} >
-
+                        <div style={randomBgStyle(30, randomArticle[0])} >
+                
                         </div>
                     </Grid>
                     <Grid item xs={6}>
-                        <div style={{ paddingTop: "30%", background: 'center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp")' }} >
+                        <div style={randomBgStyle(30, randomArticle[1])} >
 
                         </div>
                     </Grid>
                 </Grid>
                 <div className="p-2 w-full">
-                    <div style={{ paddingTop: "20%", background: 'center no-repeat url("https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp")', backgroundSize: "cover   " }} >
+                    <div style={randomBgStyle(20, randomArticle[2])} >
 
                     </div>
                 </div>

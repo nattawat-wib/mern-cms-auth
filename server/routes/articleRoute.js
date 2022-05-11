@@ -7,6 +7,7 @@ router.route("/")
         articleController.uploadArticleImage,
         articleController.addArticle
     )
+router.get("/random", articleController.randomArticle)
 
 router.route("/:articleUrl")
     .get(articleController.getArticle)

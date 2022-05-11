@@ -143,6 +143,7 @@ const AddArticle = () => {
                 />
 
                 <Select value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth className="my-8" >
+                    <MenuItem value="Art"> Art </MenuItem>
                     <MenuItem value="Business"> Business </MenuItem>
                     <MenuItem value="Travel"> Travel </MenuItem>
                     <MenuItem value="Interview"> Interview </MenuItem>

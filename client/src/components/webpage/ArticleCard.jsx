@@ -26,8 +26,10 @@ const ArticleCard = ({ article }) => {
                     <Typography component="small" color="text.light" className="text-sm"> {article.category} </Typography>
                     <Button component={Link} to={`/article/test-cate/${article.url}`} size="small" className="text-sm"> read more... </Button>
                 </div>
-                <Typography component="span" color="text.dark"> {article.title} </Typography>
+                <Typography className="line-clamp-1" component="span" color="text.dark"> {article.title} </Typography>
+
                 <Typography className="mb-3 line-clamp-4 text-sm font-light" dangerouslySetInnerHTML={{__html: article.desc}} />
+
                 <Typography align="center" color="text.light" className="text-xs truncate">
                     Created at : {article.createdAtDateTime}
                 </Typography>

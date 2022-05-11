@@ -19,16 +19,11 @@ exports.uploadArticleImage = upload.fields([{ name: "banner" }, { name: "thumbna
 exports.gerAllArticle = async (req, res) => {
     try {
         const query = {};
-        if(req.query.category) {
-            query.category = req.query.category
-        }
-    
+        if (req.query.category) query.category = req.query.category
+        if (req.query.search) query.title = { $regex: req.query.search }
+
         const allArticle = await Article.find(query);
 
-        console.log(req.query.category);
-        console.log(query);
-        console.log(allArticle);
-        
         res.status(200).json({
             status: "success",
             msg: "",
@@ -106,7 +101,7 @@ exports.addArticle = async (req, res) => {
 exports.deleteArticle = async (req, res) => {
     try {
         await Article.findOneAndDelete({ url: req.params.articleUrl });
-        
+
         res.status(200).json({
             status: "success",
             msg: "delete article successfully"
@@ -132,12 +127,12 @@ exports.editArticle = async (req, res) => {
 
         if (errorString) throw `${errorString} not allow to be empty`
 
-        const existUrl = await Article.findOne({ url: req.body.url, _id: { $ne: req.body._id} });
+        const existUrl = await Article.findOne({ url: req.body.url, _id: { $ne: req.body._id } });
         if (existUrl) throw "this url is already taken"
 
         if (/[ /]/.test(req.body.url)) throw "url should not container space or /";
 
-        const newArticle = await Article.findByIdAndUpdate( req.body._id, {
+        const newArticle = await Article.findByIdAndUpdate(req.body._id, {
             title: req.body.title,
             desc: req.body.desc,
             category: req.body.category,
@@ -158,6 +153,28 @@ exports.editArticle = async (req, res) => {
     } catch (err) {
         console.log(err);
 
+        res.status(400).json({
+            status: "error",
+            msg: err
+        })
+    }
+}
+
+exports.randomArticle = async (req, res) => {
+    try {
+        console.log("randomArticle 1");
+        const randomArticle = await Article.find();
+        console.log("randomArticle", randomArticle);
+        
+        res.status(200).json({
+            status: "success",
+            msg: "random article success",
+            data: randomArticle
+        })
+
+    } catch (err) {
+        console.log(err);
+        
         res.status(400).json({
             status: "error",
             msg: err
