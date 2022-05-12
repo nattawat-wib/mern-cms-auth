@@ -21,6 +21,13 @@ exports.register = async (req, res) => {
         });
         
         const token = jwt.sign({ _id: newMember._id }, process.env.SECRET_JWT);
+        
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
+        })
+
+        newMember.password = undefined;
 
         res.status(200).json({
             status: "success",
@@ -58,6 +65,13 @@ exports.login = async (req, res) => {
         if(!isPasswordCorrect) throw "username or password is not correct";
 
         const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
+
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
+        })
+
+        existMember.password = undefined;
 
         res.status(200).json({
             status: "success",
