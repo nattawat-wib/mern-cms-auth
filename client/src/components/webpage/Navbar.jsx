@@ -52,10 +52,9 @@ const Navbar = () => {
         <CustomNavbar scroll_height={scrollHeight}>
             <Toaster toastOptions={{style: { zIndex: 99999999999, }}} />
             <Toolbar className="justify-between">
-                <Typography variant="h5" component={Link} to="/">
-                    LOGO
-                </Typography>
-
+                <Link to="/">
+                    <img src="/images/logo.png" alt="" width="90px" />
+                </Link>
                 <List className="hidden lg:flex whitespace-nowrap">
                     {
                         pageList.map((page, i) => {

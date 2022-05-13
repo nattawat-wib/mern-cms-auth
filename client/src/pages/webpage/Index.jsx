@@ -199,10 +199,12 @@ const Index = () => {
                                     <Grid container spacing={3}>
                                         {
                                             allArticle.map((article, i) => {
-                                                return (
+                                                return category === "All" || article.category === category ?
+                                                 (
                                                     <Grid key={i} item xs={12} sm={6} md={4}>
                                                         <ArticleCard article={article} />
-                                                    </Grid>)
+                                                    </Grid>
+                                                ) : ""
                                             })
                                         }
                                     </Grid>

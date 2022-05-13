@@ -20,11 +20,10 @@ const memberSchema = new mongoose.Schema({
 memberSchema.pre("save", async function(next) {
     this.password = await bcrypt.hash(this.password, 12);
     this.passwordConfirm = undefined;
-    next()
+    next();
 });
 
 memberSchema.methods.isPasswordCorrect = async function(password, passwordHash) {
-   console.log(bcrypt.compare(password, passwordHash));
    return await bcrypt.compare(password, passwordHash)
 }
 

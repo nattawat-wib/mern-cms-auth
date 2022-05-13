@@ -52,6 +52,8 @@ exports.login = async (req, res) => {
     //     password: "123123",
     //     passwordConfirm: "123123"
     // })
+    console.log(req.cookie)
+    console.log(req.cookies)
     
     try {
         if(!req.body.username || !req.body.password) {
@@ -61,17 +63,18 @@ exports.login = async (req, res) => {
         const existMember = await Member.findOne({ username: req.body.username });
         if(!existMember) throw "username or password is not correct";
         
-        const isPasswordCorrect = await existMember.isPasswordCorrect(req.body.password, existMember.password)
+        const isPasswordCorrect = await existMember.isPasswordCorrect(req.body.password, existMember.password)        
         if(!isPasswordCorrect) throw "username or password is not correct";
+        existMember.password = undefined;
 
         const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
 
-        res.cookie("jwt", token, {
-            httpOnly: true,
-            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
-        })
+        res.cookie("jwt", "awdawdawd")
 
-        existMember.password = undefined;
+        // res.cookie("jwt", token, {
+        //     httpOnly: false,
+        //     expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
+        // })
 
         res.status(200).json({
             status: "success",
