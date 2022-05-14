@@ -1,6 +1,5 @@
 const Article = require("./../model/articleModel");
 const multer = require("multer");
-const memberModel = require("../model/memberModel");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -57,6 +56,8 @@ exports.getArticle = async (req, res) => {
 
 exports.addArticle = async (req, res) => {
     try {
+        if(!req.body || !Object.keys(req.body).length) throw "Please enter all input fields"
+
         let errorString = "";
         ["title", "desc", "category", "url"].map(key => {
             if (!req.body[key]) errorString += ` ${key}`
@@ -119,6 +120,8 @@ exports.deleteArticle = async (req, res) => {
 
 exports.editArticle = async (req, res) => {
     try {
+        if(!req.body || !Object.keys(req.body).length) throw "Please enter all input fields"
+
         let errorString = "";
 
         ["title", "desc", "url", "category", "thumbnail", "banner"].map(key => {

@@ -41,7 +41,7 @@ const ControlPanel = () => {
     
     useEffect(() => {
         if(isAuth()) {
-            setMember(JSON.parse(localStorage.getItem("token")))
+            setMember(JSON.parse(localStorage.getItem("member")))
         } else {
             navigate("/cp")
         }

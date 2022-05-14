@@ -25,7 +25,7 @@ const AddArticle = () => {
     const params = useParams();
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BASE_API}/article/${params.articleUrl}`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`)
             .then(resp => {
                 setForm(resp.data.data)
                 setTempImage({
@@ -60,7 +60,7 @@ const AddArticle = () => {
         console.log("form", form);
 
         axios
-            .patch(`${process.env.REACT_APP_BASE_API}/article/${params.articleUrl}`, formData)
+            .patch(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`, formData)
             .then(resp => {
                 toast.success(resp.data.msg);
                 setTimeout(() => { navigate("/cp/article") }, 1500)

@@ -31,7 +31,7 @@ const Result = () => {
     const [allArticle, setAllArticle] = useState([]);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BASE_API}/article?${category ? `category=${category}` : ""}${search ? `search=${search}` : ""}`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article?${category ? `category=${category}` : ""}${search ? `search=${search}` : ""}`)
             .then(resp => setAllArticle(resp.data.data))
             .catch(console.log)
     }, [category, search])
