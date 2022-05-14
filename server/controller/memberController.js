@@ -52,8 +52,8 @@ exports.login = async (req, res) => {
     //     password: "123123",
     //     passwordConfirm: "123123"
     // })
-    console.log(req.cookie)
-    console.log(req.cookies)
+    // console.log(req.cookie)
+    // console.log(req.cookies)
     
     try {
         if(!req.body.username || !req.body.password) {
@@ -67,9 +67,11 @@ exports.login = async (req, res) => {
         if(!isPasswordCorrect) throw "username or password is not correct";
         existMember.password = undefined;
 
+        console.log('process.env.SECRET_JWT', process.env.SECRET_JWT);
+
         const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
 
-        res.cookie("jwt", "awdawdawd")
+        // res.cookie("jwt", "awdawdawd")
 
         // res.cookie("jwt", token, {
         //     httpOnly: false,
