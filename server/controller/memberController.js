@@ -8,7 +8,7 @@ exports.register = async (req, res) => {
         }
 
         const existMember = await Member.findOne({ username: req.body.username })
-        if (existMember) throw "this username is already use";
+        if (existMember) throw "this username is already taken";
 
         if (req.body.password !== req.body.passwordConfirm) {
             throw "password and password confirm should be match";
@@ -22,11 +22,15 @@ exports.register = async (req, res) => {
 
         const token = jwt.sign({ _id: newMember._id }, process.env.SECRET_JWT);
 
-        res.cookie("jwt", token, {
+        newMember.token = token;
+        await newMember.save({ validateBeforeSave: false });
+
+        res.cookie("token", token, {
             httpOnly: true,
             expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
         })
 
+        newMember.token = undefined;
         newMember.password = undefined;
 
         res.status(200).json({
@@ -65,7 +69,7 @@ exports.login = async (req, res) => {
         const isPasswordCorrect = await existMember.isPasswordCorrect(req.body.password, existMember.password)
         if (!isPasswordCorrect) throw "username or password is not correct";
 
-        const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
+        const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT, {expiresIn: "15m"});
 
         existMember.token = token
         await existMember.save({ validateBeforeSave: false })
@@ -74,7 +78,7 @@ exports.login = async (req, res) => {
 
         res.cookie("token", token, {
             httpOnly: true,
-            expires: new Date(Date.now() + 2 * 24 * 60 * 60 * 1000)
+            expires: new Date(Date.now() + 1 * 24 * 60 * 60 * 1000)
         })
 
         res.status(200)
