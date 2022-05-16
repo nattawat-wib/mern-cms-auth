@@ -32,20 +32,27 @@ const ControlPanel = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { themeMode, auth, setAuth } = useContext(mainContext);
     
-    if(!auth && location.pathname !== "/cp") {
-        navigate("/cp");
-    };        
-    console.log("auth", auth);
-
     useEffect(() => {        
-        console.log("use effect controlpanel")
+        console.log("useEffect controlpanel")
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => setAuth(resp.data.data))
             .catch(err => {
+                console.log("not login");
                 navigate("/cp");
                 setAuth(null)
             })
     }, [])
+
+    if(!auth && location.pathname !== "/cp") {
+        console.log(1);
+        navigate("/cp");
+    } else if(auth && location.pathname === "/cp") {
+        console.log(2);
+        navigate("/cp/article");
+    }    
+
+    console.log("auth", auth);    
+    console.log("pathname", location.pathname);    
 
     return (
         <>

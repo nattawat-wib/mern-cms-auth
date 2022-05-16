@@ -26,7 +26,7 @@ export const mainContext = createContext("light");
 
 function App() {
     const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode") || "light");
-    const [auth, setAuth] = useState({});
+    const [auth, setAuth] = useState(null);
 
     useEffect(() => {
         localStorage.setItem("themeMode", themeMode);

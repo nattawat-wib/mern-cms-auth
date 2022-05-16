@@ -30,8 +30,8 @@ const Navbar = prop => {
     const handleLogout = () => {
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/logout`, { withCredentials: true })
             .then(resp => {
-                setAuth(null);
                 navigate("/cp");
+                setAuth(null);
                 toast.success(resp.data.msg);
             })
             .catch(err => {
