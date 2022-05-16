@@ -79,12 +79,12 @@ const Navbar = () => {
                 </List>
 
                 <Box>
-                    <IconButton>
+                    <IconButton onClick={() => setThemeMode(prev => prev === "light" ? "dark" : "light")}>
                         {
                             themeMode === "light" ?
-                            <LightModeIcon color="light" onClick={() => setThemeMode("dark")} />
+                            <LightModeIcon color="light" />
                             :
-                            <NightlightIcon color="light" onClick={() => setThemeMode("light")} />   
+                            <NightlightIcon color="light" />   
                         }
                     </IconButton>
                     <IconButton color="light" onClick={() => setIsDialogOpen(true)}>

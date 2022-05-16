@@ -11,7 +11,7 @@ const PageWrapper = styled(Paper)`
     transition: .3s ease;
     margin-left: auto;
     min-height: calc(100vh - 64px);
-    background-color: ${({ themeMode }) =>  themeMode === "light" ? "#f5f5f5" : "#333" };
+    background-color: ${({ theme_mode }) =>  theme_mode === "light" ? "#f5f5f5" : "#333" };
     padding: 3rem;
     display: flex;
     align-items: center;
@@ -41,9 +41,9 @@ const ControlPanel = () => {
     
     useEffect(() => {
         if(isAuth()) {
-            setMember((localStorage.getItem("token") || null))
+            setMember(JSON.parse(localStorage.getItem("member")));
         } else {
-            navigate("/cp")
+            navigate("/cp");
         }
     }, [])
 
@@ -51,7 +51,7 @@ const ControlPanel = () => {
         <>
             <Navbar member={member} isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
             <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-            <PageWrapper is_sidebar_open={isSidebarOpen} themeMode={themeMode}>
+            <PageWrapper is_sidebar_open={isSidebarOpen.toString()} theme_mode={themeMode}>
                 <CardWrapper>
                     <Outlet />
                 </CardWrapper>

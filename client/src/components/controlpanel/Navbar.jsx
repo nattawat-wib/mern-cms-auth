@@ -46,15 +46,16 @@ const Navbar = prop => {
                     }
                 </IconButton>
                 <Box>
-                    <Button color="light" variant="outlined" components={Link} to="/">
+                    <Button color="light" variant="outlined" component={Link} to="/">
                         Back to Webpage
                     </Button>
-                    <IconButton>
+
+                    <IconButton sx={{ml: 2}} onClick={() => setThemeMode(prev => prev === "light" ? "dark" : "light")}>
                         {
                             themeMode === "light" ?
-                            <LightModeIcon color="light" onClick={() => setThemeMode("dark")} />
+                            <LightModeIcon color="light" />
                             :
-                            <NightlightIcon color="light" onClick={() => setThemeMode("light")} />
+                            <NightlightIcon color="light" />
                         }
                     </IconButton>
 

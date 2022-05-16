@@ -1,9 +1,9 @@
 //https://coolors.co/palette/8ecae6-219ebc-023047-ffb703-fb8500
 import { createTheme } from "@mui/material/styles";
 
-export const main_theme = createTheme({
+export const lightTheme = createTheme({
     palette: {
-        mode: localStorage.getItem("themeMode"),
+        mode: "light",
         primary: {
             main: "#219EBC",
             light: "#8ECAE6",
@@ -32,5 +32,19 @@ export const main_theme = createTheme({
     },
     typography: {
         fontFamily: "Kanit, sans-serif",
+    }
+})
+
+export const darkTheme = createTheme({
+    ...lightTheme,
+    palette: {
+        ...lightTheme.palette,
+        primary: {
+            main: "#ff0000",
+            light: "#ff0000",
+            dark: "#ff0000",
+            contrastText: "#fff"
+        },        
+        mode: "dark"
     }
 })
