@@ -33,26 +33,18 @@ const ControlPanel = () => {
     const { themeMode, auth, setAuth } = useContext(mainContext);
     
     useEffect(() => {        
-        console.log("useEffect controlpanel")
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => setAuth(resp.data.data))
             .catch(err => {
-                console.log("not login");
-                navigate("/cp");
+                console.log("Error:" + err);
                 setAuth(null)
-            })
+            });
     }, [])
 
-    if(!auth && location.pathname !== "/cp") {
-        console.log(1);
-        navigate("/cp");
-    } else if(auth && location.pathname === "/cp") {
-        console.log(2);
-        navigate("/cp/article");
-    }    
-
-    console.log("auth", auth);    
-    console.log("pathname", location.pathname);    
+    useEffect(() => {
+             if(!auth && location.pathname !== "/cp") navigate("/cp");
+        else if(auth && location.pathname === "/cp")  navigate("/cp/article");
+    }, [location, auth])
 
     return (
         <>

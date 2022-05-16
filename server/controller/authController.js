@@ -80,11 +80,8 @@ exports.changePassword = async (req, res) => {
 exports.verifyToken = async (req, res) => {
     const { token }  = req.cookies;
 
-    if(!token) return res.status(400).json({ status: "error", data: null })
-    const loginMember = await Member.findOne({ token }).select(["-password", "-token", "-__v"]);
-
-    console.log("req.cookies", req.cookies);
-    console.log("loginMember", loginMember);
+    if(!token) return res.status(401).json({ status: "error", data: null })
+    const loginMember = await Member.findOne({ token }).select(["-password", "-__v"]);
 
     if(loginMember) return res.status(200).json({ status: "success", data: loginMember })
 }

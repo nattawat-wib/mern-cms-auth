@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { TextField, Button, InputAdornment, IconButton } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { mainContext } from "../../App";
 import axios from "axios";
 
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import toaster, { Toaster } from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 
 const handleInputAdornment = (handleFor, isPasswordHidden, setIsPasswordHidden) => {
     return (
@@ -35,25 +35,25 @@ const ChangePassword = () => {
         newPassword: true,
         newPasswordConfirm: true,
     });
-
+    const { setAuth } = useContext(mainContext);
     const [form, setForm] = useState({});
-    const navigate = useNavigate();
 
     const handleSubmit = e => {
         e.preventDefault()
-        toaster.loading("pending...");
+        toast.loading("pending...");
 
         axios.post(`${process.env.REACT_APP_BASE_API}/api/member/change-password`, form ,{ withCredentials: true })
             .then(resp => {
-                toaster.dismiss();
-                toaster.success(resp.data.msg);
-                localStorage.removeItem("token");
-                localStorage.removeItem("member");
-                setTimeout(() => navigate("/cp"), 2000);
+                toast.dismiss();
+                toast.success(resp.data.msg);
+                
+                setTimeout(() => {
+                    setAuth(null)
+                }, 2000);
             })
             .catch(resp => {
-                toaster.dismiss();
-                toaster.error(resp.response.data.msg);
+                toast.dismiss();
+                toast.error(resp.response.data.msg);
             })
     }
 

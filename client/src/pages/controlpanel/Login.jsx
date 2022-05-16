@@ -72,12 +72,7 @@ const LoginButton = styled(Button)`
 const Login = () => {
     const [loginFrom, setLoginForm] = useState({})
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
-    const navigate = useNavigate();
     const { setAuth } = useContext(mainContext);
-
-    useEffect(() => {
-        // if(localStorage.getItem("token")) navigate("/cp/article")
-    }, [])
 
     const handleLogin = e => {
         e.preventDefault();
@@ -85,10 +80,13 @@ const Login = () => {
 
         axios.post(`${process.env.REACT_APP_BASE_API}/api/member/login`, loginFrom, {withCredentials: true})
             .then(resp => {                
-                setAuth(resp.data.data);
                 toast.dismiss();
+                toast.loading("directing you to control panel page");
                 toast.success(resp.data.msg);
-                setTimeout(() => navigate("/cp/article"), 2000);
+                setTimeout(() => {
+                    toast.dismiss();
+                    setAuth(resp.data.data);
+                }, 2000);
             })
             .catch(err => {
                 toast.dismiss();
