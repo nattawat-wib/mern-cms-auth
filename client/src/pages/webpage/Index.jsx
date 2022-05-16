@@ -96,11 +96,11 @@ const Index = () => {
     
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BASE_API}/article`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article`)
             .then(resp => setAllArticle(resp.data.data))
             .catch(console.log)
 
-        axios.get(`${process.env.REACT_APP_BASE_API}/article/random`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article/random`)
             .then(resp => {                
                 setRandomArticle(resp.data.data)
             })

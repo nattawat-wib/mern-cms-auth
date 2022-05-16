@@ -64,7 +64,7 @@ const AddMember = () => {
 
         // return
 
-        axios.post(`${process.env.REACT_APP_BASE_API}/member/register`, form)
+        axios.post(`${process.env.REACT_APP_BASE_API}/api/member/register`, form)
             .then(resp => {
                 toast.dismiss();
                 toast.success(resp.data.msg);

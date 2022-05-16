@@ -2,6 +2,7 @@ import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
 
 import ArticleIcon from '@mui/icons-material/Article';
 import AddBoxIcon from '@mui/icons-material/AddBox';
@@ -25,12 +26,20 @@ const PermanentSideBar = styled(Drawer)`
 const Sidebar = prop => {
     const { isSidebarOpen, setIsSidebarOpen } = prop;
     const navigate = useNavigate()
-    
+
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("member");
-        toast.success("Logout Successfully");
-        navigate("/cp");
+
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/member/logout`, { withCredentials: true })
+            .then(resp => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("member");
+                toast.success(resp.data.msg);
+                navigate("/cp");
+            })
+            .catch(resp => {
+                toast.error(resp.response.data.msg);
+            })
+
     }
 
     return (

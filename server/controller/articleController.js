@@ -1,6 +1,5 @@
 const Article = require("./../model/articleModel");
 const multer = require("multer");
-const memberModel = require("../model/memberModel");
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -57,6 +56,8 @@ exports.getArticle = async (req, res) => {
 
 exports.addArticle = async (req, res) => {
     try {
+        if(!req.body || !Object.keys(req.body).length) throw "Please enter all input fields"
+
         let errorString = "";
         ["title", "desc", "category", "url"].map(key => {
             if (!req.body[key]) errorString += ` ${key}`
@@ -100,7 +101,9 @@ exports.addArticle = async (req, res) => {
 
 exports.deleteArticle = async (req, res) => {
     try {
-        await Article.findOneAndDelete({ url: req.params.articleUrl });
+        const deleteArticle = await Article.findOneAndDelete({ url: req.params.articleUrl });
+
+        if(!deleteArticle) throw "This article is not exist"
 
         res.status(200).json({
             status: "success",
@@ -108,17 +111,19 @@ exports.deleteArticle = async (req, res) => {
         })
 
     } catch (err) {
-        console.log(err);
+        console.log("err", err);
 
         res.status(404).json({
             status: "error",
-            msg: "article not found"
+            msg: err
         })
     }
 }
 
 exports.editArticle = async (req, res) => {
     try {
+        if(!req.body || !Object.keys(req.body).length) throw "Please enter all input fields"
+
         let errorString = "";
 
         ["title", "desc", "url", "category", "thumbnail", "banner"].map(key => {

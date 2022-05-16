@@ -29,7 +29,7 @@ const ArticleDetail = () => {
     // console.log(articleUrl);
 
     useEffect(() => {
-        axios.get(`${process.env.REACT_APP_BASE_API}/article/${articleUrl}`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article/${articleUrl}`)
             .then(resp => setArticle(resp.data.data))
             .catch(console.log)
     }, [])

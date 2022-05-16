@@ -81,10 +81,8 @@ const Login = () => {
         e.preventDefault();
         toast.loading("pending...");
 
-        axios.post(`${process.env.REACT_APP_BASE_API}/member/login`, loginFrom)
-            .then(resp => {
-                console.log("resp", resp)
-                
+        axios.post(`${process.env.REACT_APP_BASE_API}/api/member/login`, loginFrom, {withCredentials: true})
+            .then(resp => {                
                 toast.dismiss();
                 localStorage.setItem("token", resp.data.token);
                 localStorage.setItem("member", JSON.stringify(resp.data.data));

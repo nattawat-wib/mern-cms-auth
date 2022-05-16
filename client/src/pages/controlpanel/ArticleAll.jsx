@@ -17,13 +17,13 @@ const ArticleAll = () => {
     }, [])
 
     const getArticle = () => {
-        axios.get(`${process.env.REACT_APP_BASE_API}/article`)
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/article`)
             .then(resp => setArticleList(resp.data.data))
             .catch(console.log)
     }
 
     const handleDeleteArticle = () => {
-        axios.delete(`${process.env.REACT_APP_BASE_API}/article/${deleteArticleUrl.trim()}`)
+        axios.delete(`${process.env.REACT_APP_BASE_API}/api/article/${deleteArticleUrl.trim()}`)
             .then(resp => {
                 getArticle()
                 setIsDialogOpen(false)

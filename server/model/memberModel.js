@@ -14,11 +14,16 @@ const memberSchema = new mongoose.Schema({
     passwordConfirm: {
         type: String,
         required: true
+    },
+    token: {
+        type: String
     }
 })
 
 memberSchema.pre("save", async function(next) {
-    this.password = await bcrypt.hash(this.password, 12);
+    if(this.password && this.isModified("password")) {
+        this.password = await bcrypt.hash(this.password, 12);
+    }
     this.passwordConfirm = undefined;
     next();
 });

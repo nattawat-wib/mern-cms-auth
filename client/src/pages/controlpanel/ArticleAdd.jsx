@@ -39,7 +39,7 @@ const AddArticle = () => {
         console.log(form);
 
         axios
-            .post(`${process.env.REACT_APP_BASE_API}/article`, formData)
+            .post(`${process.env.REACT_APP_BASE_API}/api/article`, formData, { withCredentials: true })
             .then(resp => {
                 console.log(resp);
 
