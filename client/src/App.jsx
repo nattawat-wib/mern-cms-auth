@@ -30,7 +30,7 @@ function App() {
         localStorage.setItem("themeMode", themeMode);
     }, [themeMode])
 
-    // const main_theme = createTheme({
+    // const lightTheme = createTheme({
     //     palette: {
     //         mode: themeMode,
     //         primary: {

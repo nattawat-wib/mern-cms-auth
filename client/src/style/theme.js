@@ -39,12 +39,12 @@ export const darkTheme = createTheme({
     ...lightTheme,
     palette: {
         ...lightTheme.palette,
-        primary: {
-            main: "#ff0000",
-            light: "#ff0000",
-            dark: "#ff0000",
-            contrastText: "#fff"
-        },        
+        // primary: {
+        //     main: "#ff0000",
+        //     light: "#ff0000",
+        //     dark: "#ff0000",
+        //     contrastText: "#fff"
+        // },        
         mode: "dark"
     }
 })

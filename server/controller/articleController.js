@@ -167,9 +167,7 @@ exports.editArticle = async (req, res) => {
 
 exports.randomArticle = async (req, res) => {
     try {
-        console.log("randomArticle 1");
         const randomArticle = await Article.find();
-        console.log("randomArticle", randomArticle);
         
         res.status(200).json({
             status: "success",
