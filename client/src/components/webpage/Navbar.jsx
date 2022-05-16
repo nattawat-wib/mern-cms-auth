@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ThemeModeSwitcher } from "../../App";
 import { Toolbar, Box, List, Drawer, ListItem, IconButton, Typography, ListItemText, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -7,8 +8,11 @@ import { CustomNavbar, CustomSideBar } from "./../../style/sidebar.style";
 import FormatAlignRightIcon from '@mui/icons-material/FormatAlignRight';
 import CloseIcon from '@mui/icons-material/Close';
 import SearchIcon from '@mui/icons-material/Search';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import NightlightIcon from '@mui/icons-material/Nightlight';
 
 const Navbar = () => {
+    const {themeMode, setThemeMode} = useContext(ThemeModeSwitcher);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
@@ -75,10 +79,18 @@ const Navbar = () => {
                 </List>
 
                 <Box>
+                    <IconButton>
+                        {
+                            themeMode === "light" ?
+                            <LightModeIcon color="light" onClick={() => setThemeMode("dark")} />
+                            :
+                            <NightlightIcon color="light" onClick={() => setThemeMode("light")} />   
+                        }
+                    </IconButton>
                     <IconButton color="light" onClick={() => setIsDialogOpen(true)}>
                         <SearchIcon />
                     </IconButton>
-                    <Switch />
+                    {/* <Switch  /> */}
                     <IconButton className="inline lg:hidden" color="light" sx={{ ml: 2 }} onClick={() => setIsSidebarOpen(true)} >
                         <FormatAlignRightIcon />
                     </IconButton>

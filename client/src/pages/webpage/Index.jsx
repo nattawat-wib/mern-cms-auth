@@ -31,7 +31,7 @@ const MainTitle = styled(Typography)`
     font-size: 2rem;
     text-align: center;
     display: block;
-    color: #023047;
+    // color: #023047;
     margin: 1.5rem auto;
 `
 

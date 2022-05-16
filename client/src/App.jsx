@@ -1,11 +1,15 @@
+import { createContext, useState, useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import { StyledEngineProvider } from "@mui/material";
-import { main_theme } from "./style/theme"
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+// import { main_theme } from "./style/theme"
+import { CssBaseline } from "@mui/material";
 
 import Index from "./pages/webpage/Index";
 import ArticleDetail from "./pages/webpage/ArticleDetail";
 import Result from "./pages/webpage/Result";
+import Notfound from "./pages/404";
 
 import Login from "./pages/controlpanel/Login";
 import ArticleAll from "./pages/controlpanel/ArticleAll";
@@ -17,38 +21,85 @@ import ChangePassword from "./pages/controlpanel/ChangePassword";
 import ControlPanel from "./layout/ControlPanel";
 import Webpage from "./layout/Webpage";
 
+export const ThemeModeSwitcher = createContext("light");
+
 function App() {
+    const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode") || "light");
+
+    useEffect(() => {
+        localStorage.setItem("themeMode", themeMode)
+    }, [themeMode])
+
+    const main_theme = createTheme({
+        palette: {
+            mode: themeMode,
+            primary: {
+                main: "#219EBC",
+                light: "#8ECAE6",
+                dark: "#023047",
+                contrastText: "#fff"
+            },
+            secondary: {
+                main: "#FFB703",
+                dark: "#FB8500",
+                contrastText: "#fff"
+            },
+            dark: {
+                dark: "#212529",
+                main: "#343a40",
+                light: "#6c757d",
+            },
+            light: {
+                main: "#fff"
+            },
+            text: {
+                dark: "#212529",
+                main: "#343a40",
+                light: "#6c757d",
+                disabled: "#ced4da"
+            }
+        },
+        typography: {
+            fontFamily: "Kanit, sans-serif",
+        }
+    })
+
 	return (
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={main_theme}>
-				<BrowserRouter>
-					<Routes>
+                <ThemeModeSwitcher.Provider value={{themeMode, setThemeMode}}>
 
-						{/* WEPAGE */}
-						<Route path="/" element={<Webpage />} >
-							<Route index element={<Index />} />
+                    <BrowserRouter>
+                        <CssBaseline />
+                        <Routes>
 
-							<Route path="article" element={<Result />} />
-							<Route path="article/:category" element={<Result />} />
-							<Route path="article/:category/:articleUrl" element={<ArticleDetail />} />
+                            {/* WEPAGE */}
+                            <Route path="/" element={<Webpage />} >
+                                <Route index element={<Index />} />
 
-							<Route path="search" element={<Result />} />
-						</Route>
+                                <Route path="article" element={<Result />} />
+                                <Route path="article/:category" element={<Result />} />
+                                <Route path="article/:category/:articleUrl" element={<ArticleDetail />} />
 
-						<Route path="/cp" element={<Login />} />
+                                <Route path="search" element={<Result />} />
+                            </Route>
 
-						{/* CONTROL PANEL */}
-						<Route path="/cp" element={<ControlPanel />}>
-							{/* <Route index element={<Login />} /> */}
-							<Route path="article" element={<ArticleAll />} />
-							<Route path="article/add" element={<ArticleAdd />} />
-							<Route path="article/edit/:articleUrl" element={<ArticleEdit />} />
-							<Route path="member/add" element={<AddMember />} />
-							<Route path="member/edit-password" element={<ChangePassword />} />
-						</Route>
+                            <Route path="/cp" element={<Login />} />
 
-					</Routes>
-				</BrowserRouter>
+                            {/* CONTROL PANEL */}
+                            <Route path="/cp" element={<ControlPanel />}>
+                                {/* <Route index element={<Login />} /> */}
+                                <Route path="article" element={<ArticleAll />} />
+                                <Route path="article/add" element={<ArticleAdd />} />
+                                <Route path="article/edit/:articleUrl" element={<ArticleEdit />} />
+                                <Route path="member/add" element={<AddMember />} />
+                                <Route path="member/edit-password" element={<ChangePassword />} />
+                            </Route>
+
+                            <Route path="/*" element={<Notfound />} />
+                        </Routes>
+                    </BrowserRouter>
+                </ThemeModeSwitcher.Provider>
 			</ThemeProvider>
 		</StyledEngineProvider>
 	);

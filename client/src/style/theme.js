@@ -3,6 +3,7 @@ import { createTheme } from "@mui/material/styles";
 
 export const main_theme = createTheme({
     palette: {
+        mode: localStorage.getItem("themeMode"),
         primary: {
             main: "#219EBC",
             light: "#8ECAE6",
