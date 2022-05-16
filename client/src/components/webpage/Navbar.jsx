@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ThemeModeSwitcher } from "../../App";
+import { mainContext } from "../../App";
 import { Toolbar, Box, List, Drawer, ListItem, IconButton, Typography, ListItemText, Switch, Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
@@ -50,7 +50,7 @@ import styled from "styled-components";
 // `
 
 const Navbar = () => {
-    const { themeMode, setThemeMode } = useContext(ThemeModeSwitcher);
+    const { themeMode, setThemeMode } = useContext(mainContext);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);

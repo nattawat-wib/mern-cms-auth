@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Typography, TextField, Button, IconButton } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { mainContext } from "./../../App";
 
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
@@ -72,10 +73,11 @@ const Login = () => {
     const [loginFrom, setLoginForm] = useState({})
     const [isPasswordHidden, setIsPasswordHidden] = useState(true);
     const navigate = useNavigate();
+    const { setAuth } = useContext(mainContext);
 
     useEffect(() => {
-        if(localStorage.getItem("token")) navigate("/cp/article")
-    }, [])    
+        // if(localStorage.getItem("token")) navigate("/cp/article")
+    }, [])
 
     const handleLogin = e => {
         e.preventDefault();
@@ -83,19 +85,14 @@ const Login = () => {
 
         axios.post(`${process.env.REACT_APP_BASE_API}/api/member/login`, loginFrom, {withCredentials: true})
             .then(resp => {                
+                setAuth(resp.data.data);
                 toast.dismiss();
-                localStorage.setItem("token", resp.data.token);
-                localStorage.setItem("member", JSON.stringify(resp.data.data));
                 toast.success(resp.data.msg);
-                setTimeout(() => {
-                    navigate("/cp/article");
-                }, 2000)
+                setTimeout(() => navigate("/cp/article"), 2000);
             })
-            .catch(resp => {
+            .catch(err => {
                 toast.dismiss();
-                localStorage.removeItem("token");
-                localStorage.removeItem("member");
-                toast.error(resp.response.data.msg);
+                toast.error(err.response.data.msg);
             })
     }
 

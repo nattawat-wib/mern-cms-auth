@@ -22,10 +22,11 @@ import Webpage from "./layout/Webpage";
 // import { lightTheme, darkTheme } from "./style/theme"
 import { createTheme } from "@mui/material/styles";
 
-export const ThemeModeSwitcher = createContext("light");
+export const mainContext = createContext("light");
 
 function App() {
     const [themeMode, setThemeMode] = useState(localStorage.getItem("themeMode") || "light");
+    const [auth, setAuth] = useState({});
 
     useEffect(() => {
         localStorage.setItem("themeMode", themeMode);
@@ -68,7 +69,7 @@ function App() {
 	return (
 		<StyledEngineProvider injectFirst>
 			<ThemeProvider theme={mainTheme}>
-                <ThemeModeSwitcher.Provider value={{themeMode, setThemeMode}}>
+                <mainContext.Provider value={{themeMode, setThemeMode, auth, setAuth}}>
                     <BrowserRouter>
                         <CssBaseline />
                         <Routes>
@@ -84,11 +85,10 @@ function App() {
                                 <Route path="search" element={<Result />} />
                             </Route>
 
-                            <Route path="/cp" element={<Login />} />
 
                             {/* CONTROL PANEL */}
                             <Route path="/cp" element={<ControlPanel />}>
-                                {/* <Route index element={<Login />} /> */}
+                                <Route index element={<Login />} />
                                 <Route path="article" element={<ArticleAll />} />
                                 <Route path="article/add" element={<ArticleAdd />} />
                                 <Route path="article/edit/:articleUrl" element={<ArticleEdit />} />
@@ -99,7 +99,7 @@ function App() {
                             <Route path="/*" element={<Notfound />} />
                         </Routes>
                     </BrowserRouter>
-                </ThemeModeSwitcher.Provider>
+                </mainContext.Provider>
 			</ThemeProvider>
 		</StyledEngineProvider>
 	);

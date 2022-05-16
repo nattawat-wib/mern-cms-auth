@@ -9,6 +9,8 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import LogoutIcon from '@mui/icons-material/Logout';
+import { useContext } from "react";
+import { mainContext } from "../../App";
 
 const PermanentSideBar = styled(Drawer)`
     & .MuiPaper-root {
@@ -25,21 +27,20 @@ const PermanentSideBar = styled(Drawer)`
 
 const Sidebar = prop => {
     const { isSidebarOpen, setIsSidebarOpen } = prop;
+    const { setAuth } = useContext(mainContext);
     const navigate = useNavigate()
 
     const handleLogout = () => {
-
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/logout`, { withCredentials: true })
             .then(resp => {
-                localStorage.removeItem("token");
-                localStorage.removeItem("member");
-                toast.success(resp.data.msg);
                 navigate("/cp");
+                setAuth(null);
+                toast.success(resp.data.msg);
             })
-            .catch(resp => {
-                toast.error(resp.response.data.msg);
+            .catch(err => {
+                toast.dismiss()
+                toast.error(err.response.data.msg);
             })
-
     }
 
     return (

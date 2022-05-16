@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { ThemeModeSwitcher } from "../../App";
+import { mainContext } from "../../App";
 import { AppBar, Toolbar, Button, IconButton, Menu, MenuItem, Box } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightIcon from '@mui/icons-material/Nightlight';
+import axios from "axios";
 
 const AppBarLinear = styled(AppBar)`
     background: rgb(0,135,213);
@@ -24,13 +25,19 @@ const Navbar = prop => {
     const open = Boolean(dropdownParent);
     const { isSidebarOpen, setIsSidebarOpen } = prop;
     const navigate = useNavigate();
-    const { themeMode, setThemeMode } = useContext(ThemeModeSwitcher);
+    const { themeMode, setThemeMode, auth, setAuth } = useContext(mainContext);
 
     const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("member");
-        toast.success("Logout Successfully");
-        navigate("/cp");
+        axios.get(`${process.env.REACT_APP_BASE_API}/api/member/logout`, { withCredentials: true })
+            .then(resp => {
+                setAuth(null);
+                navigate("/cp");
+                toast.success(resp.data.msg);
+            })
+            .catch(err => {
+                toast.dismiss()
+                toast.error(err.response.data.msg)
+            })
     }
 
     return (
@@ -50,12 +57,12 @@ const Navbar = prop => {
                         Back to Webpage
                     </Button>
 
-                    <IconButton sx={{ml: 2}} onClick={() => setThemeMode(prev => prev === "light" ? "dark" : "light")}>
+                    <IconButton sx={{ ml: 2 }} onClick={() => setThemeMode(prev => prev === "light" ? "dark" : "light")}>
                         {
                             themeMode === "light" ?
-                            <LightModeIcon color="light" />
-                            :
-                            <NightlightIcon color="light" />
+                                <LightModeIcon color="light" />
+                                :
+                                <NightlightIcon color="light" />
                         }
                     </IconButton>
 
@@ -63,7 +70,7 @@ const Navbar = prop => {
                         color="light"
                         onClick={e => setDropdownParent(e.currentTarget)}
                     >
-                        { prop.member ? prop.member.username : "Member" }
+                        {auth ? auth.username : "Member"}
                     </Button>
 
                     <Menu
