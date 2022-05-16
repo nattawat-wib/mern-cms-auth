@@ -28,8 +28,8 @@ memberSchema.pre("save", async function(next) {
     next();
 });
 
-memberSchema.methods.isPasswordCorrect = async function(password, passwordHash) {
-   return await bcrypt.compare(password, passwordHash)
+memberSchema.methods.isPasswordCorrect = async function(newPassword, passwordHash) {
+   return await bcrypt.compare(newPassword, passwordHash)
 }
 
 module.exports = mongoose.model("member", memberSchema);

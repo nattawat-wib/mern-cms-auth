@@ -26,8 +26,8 @@ exports.isLogin = async (req, res, next) => {
     }
 }
 
-exports.logout = async (req, res, next) => {
-    const logoutMember = await Member.findById(req.member._id);
+exports.logout = async (req, res, next) => {    
+    const logoutMember = await Member.findOne({ token: req.cookies.token });
     
     logoutMember.token = undefined;
     await logoutMember.save({ validateBeforeSave: false })
@@ -39,4 +39,41 @@ exports.logout = async (req, res, next) => {
         status: "success",
         msg: "Logout Successfully"
     })
+}
+
+exports.changePassword = async (req, res) => {    
+    const { oldPassword, newPassword, newPasswordConfirm } = req.body;
+    try {
+        if(!oldPassword || !newPassword || !newPasswordConfirm) throw "Please Enter All Input";
+
+        const updateMember = await Member.findById(req.member._id);
+        console.log(await updateMember.isPasswordCorrect(req.body.newPassword, updateMember.password));
+        
+        if(!await updateMember.isPasswordCorrect(req.body.oldPassword, updateMember.password)) {
+            throw "old password is not correct";
+        }
+
+        if(newPassword !== newPasswordConfirm) throw "password and confirm password must be match";
+        if(oldPassword === newPassword) throw "old password and new password cannot be the same";
+
+        updateMember.password = newPassword;
+        await updateMember.save({ validateBeforeSave: false });
+
+        res
+        .clearCookie("token")
+        .status(200)
+        .json({
+            status: "success",
+            data: updateMember,
+            msg: "Update password successfully, please login again"
+        })
+
+    } catch (err) {
+        console.log("err", err)
+
+        res.status(400).json({
+            status: "success",
+            msg: err
+        })
+    }
 }

@@ -8,6 +8,14 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+const CKCustom = styled(CKEditor)`
+    // height: 1000px;
+
+    & .ck-editor__main {
+        background: red;
+    }
+` 
+
 const AddArticle = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
@@ -86,12 +94,11 @@ const AddArticle = () => {
                 <TextField value={form.title || ""} onChange={handleFormChange} name="title" variant="outlined" label="Title" size="small" fullWidth className="mb-8" />
 
 
-                <CKEditor
+                <CKCustom
                     editor={ClassicEditor}
                     data="Description Here <br/><br/><br/><br/><br/>"
-                    value={form.desc || ""} onChange={(event, editor) => {
+                    value={form.desc || ""} onChange={(e, editor) => {
                         const data = editor.getData();
-                        // console.log({ event, editor, data });
                         setForm({ ...form, desc: data })
                     }}
                 />

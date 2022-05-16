@@ -20,12 +20,12 @@ import styled from "styled-components";
 //     .MuiSwitch-switchBase {
 //         top: 50%;
 //         transform: translate(5px, -50%);
-        
+
 //         &.Mui-checked {
 //             transform: translate(calc(100% - 10px), -50%) !important;
 //         }
 //     }
-    
+
 //     .MuiSwitch-track {
 //         border-radius: 99px;
 //         position: relative;
@@ -50,33 +50,19 @@ import styled from "styled-components";
 // `
 
 const Navbar = () => {
-    const {themeMode, setThemeMode} = useContext(ThemeModeSwitcher);
+    const { themeMode, setThemeMode } = useContext(ThemeModeSwitcher);
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
     const [searchKey, setSearchKey] = useState("");
     const navigate = useNavigate();
     const pageList = [
-        {
-            name: "All",
-            path: "/article",
-        },
-        {
-            name: "Art",
-            path: "/article/Art",
-        },
-        {
-            name: "Business",
-            path: "/article/Business",
-        },
-        {
-            name: "Interview",
-            path: "/article/Interview",
-        },
-        {
-            name: "Travel",
-            path: "/article/Travel",
-        },
+        { name: "Home", path: "/" },
+        { name: "All", path: "/article", },
+        { name: "Art", path: "/article/Art", },
+        { name: "Business", path: "/article/Business", },
+        { name: "Interview", path: "/article/Interview", },
+        { name: "Travel", path: "/article/Travel", },
     ]
 
     const handleSearchSubmit = e => {
@@ -84,7 +70,7 @@ const Navbar = () => {
         setIsDialogOpen(false);
         setSearchKey("");
 
-        if(!searchKey) return toast.error("search ต้องไม่เป็นค่าว่าง");
+        if (!searchKey) return toast.error("search ต้องไม่เป็นค่าว่าง");
         navigate(`/search?search=${searchKey}`)
     }
 
@@ -92,7 +78,7 @@ const Navbar = () => {
 
     return (
         <CustomNavbar scroll_height={scrollHeight}>
-            <Toaster toastOptions={{style: { zIndex: 99999999999, }}} />
+            <Toaster toastOptions={{ style: { zIndex: 99999999999, } }} />
             <Toolbar className="justify-between">
                 <Link to="/">
                     <img src="/images/logo.png" alt="" width="90px" />
@@ -120,16 +106,15 @@ const Navbar = () => {
                     <IconButton onClick={() => setThemeMode(prev => prev === "light" ? "dark" : "light")}>
                         {
                             themeMode === "light" ?
-                            <LightModeIcon color="light" />
-                            :
-                            <NightlightIcon color="light" />   
+                                <LightModeIcon color="light" />
+                                :
+                                <NightlightIcon color="light" />
                         }
                     </IconButton>
                     {/* <ThemeModeToggle theme_mode={themeMode} onChange={() => setThemeMode(prev => prev === "light" ? "dark" : "light")} /> */}
                     <IconButton color="light" onClick={() => setIsDialogOpen(true)}>
                         <SearchIcon />
                     </IconButton>
-                    {/* <Switch  /> */}
                     <IconButton className="inline lg:hidden" color="light" sx={{ ml: 2 }} onClick={() => setIsSidebarOpen(true)} >
                         <FormatAlignRightIcon />
                     </IconButton>

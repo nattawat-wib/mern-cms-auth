@@ -1,9 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { createTheme } from "@mui/material/styles";
 import { ThemeProvider } from "@mui/material/styles";
 import { StyledEngineProvider, Typography } from "@mui/material";
-import { lightTheme, darkTheme } from "./style/theme"
 import { CssBaseline } from "@mui/material";
 
 import Index from "./pages/webpage/Index";
@@ -21,6 +19,9 @@ import ChangePassword from "./pages/controlpanel/ChangePassword";
 import ControlPanel from "./layout/ControlPanel";
 import Webpage from "./layout/Webpage";
 
+// import { lightTheme, darkTheme } from "./style/theme"
+import { createTheme } from "@mui/material/styles";
+
 export const ThemeModeSwitcher = createContext("light");
 
 function App() {
@@ -30,47 +31,43 @@ function App() {
         localStorage.setItem("themeMode", themeMode);
     }, [themeMode])
 
-    // const lightTheme = createTheme({
-    //     palette: {
-    //         mode: themeMode,
-    //         primary: {
-    //             main: "#219EBC",
-    //             light: "#8ECAE6",
-    //             dark: "#023047",
-    //             contrastText: "#fff"
-    //         },
-    //         secondary: {
-    //             main: "#FFB703",
-    //             dark: "#FB8500",
-    //             contrastText: "#fff"
-    //         },
-    //         dark: {
-    //             dark: "#212529",
-    //             main: "#343a40",
-    //             light: "#6c757d",
-    //         },
-    //         light: {
-    //             main: "#fff"
-    //         },
-    //         text: {
-    //             dark: "#212529",
-    //             main: "#343a40",
-    //             light: "#6c757d",
-    //             disabled: "#ced4da"
-    //         }
-    //     },
-    //     typography: {
-    //         fontFamily: "Kanit, sans-serif",
-    //     }
-    // })
-
-    console.log(lightTheme);
-    console.log(darkTheme);
-    console.log(`${themeMode}Theme`);
+    const mainTheme = createTheme({
+        palette: {
+            mode: themeMode,
+            primary: {
+                main: "#219EBC",
+                light: "#8ECAE6",
+                dark: "#023047",
+                contrastText: "#fff"
+            },
+            secondary: {
+                main: "#FFB703",
+                dark: "#FB8500",
+                contrastText: "#fff"
+            },
+            dark: {
+                dark: "#212529",
+                main: "#343a40",
+                light: "#6c757d",
+            },
+            light: {
+                main: "#fff"
+            },
+            text: {
+                dark: "#212529",
+                main: "#343a40",
+                light: "#6c757d",
+                disabled: "#ced4da"
+            }
+        },
+        typography: {
+            fontFamily: "Kanit, sans-serif",
+        }
+    })
 
 	return (
 		<StyledEngineProvider injectFirst>
-			<ThemeProvider theme={themeMode === "light" ? lightTheme : darkTheme}>
+			<ThemeProvider theme={mainTheme}>
                 <ThemeModeSwitcher.Provider value={{themeMode, setThemeMode}}>
                     <BrowserRouter>
                         <CssBaseline />

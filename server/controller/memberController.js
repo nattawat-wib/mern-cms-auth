@@ -1,7 +1,7 @@
 const Member = require("./../model/memberModel");
 const jwt = require("jsonwebtoken");
 
-exports.register = async (req, res) => {
+exports.register = async (req, res) => {    
     try {
         if (!req.body.username || !req.body.password || !req.body.passwordConfirm) {
             throw "username password and password confirm is not allow to be empty";
