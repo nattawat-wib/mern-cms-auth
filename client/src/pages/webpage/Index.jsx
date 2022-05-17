@@ -132,7 +132,7 @@ const Index = () => {
                                         </Typography>
                                     </Link>
                                     <p className="line-clamp-4" dangerouslySetInnerHTML={{ __html: article.desc }} />
-                                    <small className="mt-3 block"> เรื่องและภาพ The Cloud </small>
+                                    <small className="mt-3 block"> Post By : {article.createdBy ? article.createdBy.username : "-"} </small>
                                 </Box>
                             </MainBanner>
                         )
@@ -154,7 +154,7 @@ const Index = () => {
                             <MainBanner key={i} className="flex justify-center items-center" bg={article.banner} height={"30vh"}>
                                 <Box className="text-center text-light relative z-10 px-3">
                                     <p className="line-clamp-2"> {article.title} </p>
-                                    <small className="mt-3 block"> เรื่องและภาพ The Cloud </small>
+                                    <small className="mt-3 block"> Post By : {article.createdBy ? article.createdBy.username : "-"} </small>
                                 </Box>
                             </MainBanner>
                         )

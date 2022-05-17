@@ -17,11 +17,12 @@ exports.uploadArticleImage = upload.fields([{ name: "banner" }, { name: "thumbna
 
 exports.gerAllArticle = async (req, res) => {
     try {
+        
         const query = {};
         if (req.query.category) query.category = req.query.category
         if (req.query.search) query.title = { $regex: req.query.search }
-
-        const allArticle = await Article.find(query);
+        
+        const allArticle = await Article.find(query).populate("createdBy");
 
         res.status(200).json({
             status: "success",
@@ -39,7 +40,7 @@ exports.gerAllArticle = async (req, res) => {
 
 exports.getArticle = async (req, res) => {
     try {
-        const article = await Article.findOne({ url: req.params.articleUrl });
+        const article = await Article.findOne({ url: req.params.articleUrl }).populate("createdBy");
 
         res.status(200).json({
             status: "success",
@@ -80,7 +81,8 @@ exports.addArticle = async (req, res) => {
             category: req.body.category,
             url: req.body.url.trim(),
             thumbnail: req.files.thumbnail[0].filename,
-            banner: req.files.banner[0].filename
+            banner: req.files.banner[0].filename,
+            createdBy: req.member._id,
         });
 
         res.status(200).json({
@@ -144,6 +146,7 @@ exports.editArticle = async (req, res) => {
             url: req.body.url.trim(),
             thumbnail: req.files.thumbnail ? req.files.thumbnail[0].filename : req.body.thumbnail,
             banner: req.files.banner ? req.files.banner[0].filename : req.body.banner,
+            createdBy: req.member._id,
         }, { new: true })
 
         console.log("newArticle", newArticle);

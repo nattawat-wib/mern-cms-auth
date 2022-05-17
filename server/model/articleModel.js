@@ -42,6 +42,11 @@ const articleSchema = new mongoose.Schema({
         type: String,
         default: new Date().toLocaleString("th").slice(0, -3)
     },
+    createdBy: {
+        type: mongoose.Schema.ObjectId,
+        ref: "member",
+        required: true
+    }
 })
 
 module.exports = mongoose.model("article", articleSchema);

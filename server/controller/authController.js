@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 
 exports.isLogin = async (req, res, next) => {
     try {
+        console.log(req.cookies);
+        
         const token = req.cookies.token;
         if(!token) throw "You are not login yet, Please Login.";
         

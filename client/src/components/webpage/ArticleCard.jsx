@@ -30,8 +30,13 @@ const ArticleCard = ({ article }) => {
 
                 <Typography className="mb-3 line-clamp-4 text-sm font-light" dangerouslySetInnerHTML={{__html: article.desc}} />
 
-                <Typography align="center" color="text.light" className="text-xs truncate">
-                    Created at : {article.createdAtDateTime}
+                <Typography align="center" color="text.light" className="text-xs truncate flex justify-between">
+                    <span>
+                        Created at : {article.createdAtDateTime.split(" ")[0]}
+                    </span>
+                    <span>
+                        Post By : {article.createdBy ? article.createdBy.username : "-"}
+                    </span>
                 </Typography>
             </CardContent>
         </article>
