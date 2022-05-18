@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { TextField, Select, MenuItem, Grid, Button, bottomNavigationClasses } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -7,14 +7,16 @@ import styled from "styled-components";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { mainContext } from "../../App";
 
 const CKCustom = styled(CKEditor)`
-    // height: 1000px;
-
-    & .ck-editor__main {
-        background: red;
+    .ck-editor__editable {
+        background-color: #212121 !important;
+        border: 5px solid yellow;
+        margin: 100px;
+        display: none;
     }
-` 
+`
 
 const AddArticle = () => {
     const navigate = useNavigate();
@@ -26,6 +28,7 @@ const AddArticle = () => {
         thumbnail: "",
         banner: ""
     });
+    const { themeMode } = useContext(mainContext);
 
     const handleFormChange = e => {
         if (e.target.type === "file") {
@@ -64,7 +67,7 @@ const AddArticle = () => {
             })
             .catch(resp => toast.error(resp.response.data.msg))
     }
-
+    
     return (
         <>
             <Toaster />
@@ -74,7 +77,7 @@ const AddArticle = () => {
                     <Grid item xs={12} sm={6}>
                         <label htmlFor="thumbnailImg" style={{ cursor: "pointer" }}>
                             <figure className="relative" style={{ paddingTop: "50%" }}>
-                                <img className="fit-img" src={form.thumbnail ? URL.createObjectURL(form.thumbnail) : "https://via.placeholder.com/500"} />
+                                <img className="fit-img" src={form.thumbnail ? URL.createObjectURL(form.thumbnail) : `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`} />
                             </figure>
                             <input accept="image/*" onChange={handleFormChange} name="thumbnail" hidden id="thumbnailImg" type="file" />
                             <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="thumbnailImg"> Upload Thumbnail </Button>
@@ -83,7 +86,7 @@ const AddArticle = () => {
                     <Grid item xs={12} sm={6}>
                         <label htmlFor="bannerImg" style={{ cursor: "pointer" }}>
                             <figure className="relative" style={{ paddingTop: "50%" }}>
-                                <img className="fit-img" src={form.banner ? URL.createObjectURL(form.banner) : "https://via.placeholder.com/500"} />
+                                <img className="fit-img" src={form.banner ? URL.createObjectURL(form.banner) : `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`} />
                             </figure>
                             <input accept="image/*" onChange={handleFormChange} name="banner" hidden id="bannerImg" type="file" />
                             <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="bannerImg"> Upload Banner </Button>
@@ -93,15 +96,16 @@ const AddArticle = () => {
 
                 <TextField value={form.title || ""} onChange={handleFormChange} name="title" variant="outlined" label="Title" size="small" fullWidth className="mb-8" />
 
-
-                <CKCustom
-                    editor={ClassicEditor}
-                    data="Description Here <br/><br/><br/><br/><br/>"
-                    value={form.desc || ""} onChange={(e, editor) => {
-                        const data = editor.getData();
-                        setForm({ ...form, desc: data })
-                    }}
-                />
+                <div className={themeMode}>
+                    <CKCustom
+                        editor={ClassicEditor}
+                        data={form.desc}
+                        onChange={(e, editor) => {
+                            const data = editor.getData();
+                            setForm({ ...form, desc: data })
+                        }}
+                    />
+                </div>
 
                 <Select value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth className="my-8" >
                     <MenuItem value="null"> === Select Category === </MenuItem>

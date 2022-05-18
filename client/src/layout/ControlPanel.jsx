@@ -42,8 +42,8 @@ const ControlPanel = () => {
     }, [])
 
     useEffect(() => {
-             if(!auth && location.pathname !== "/cp") navigate("/cp");
-        else if(auth && location.pathname === "/cp")  navigate("/cp/article");
+             if(!auth && location.pathname !== "/cp") { navigate("/cp");}
+        else if(auth && location.pathname === "/cp")  { navigate("/cp/article");}
     }, [location, auth])
 
     return (

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { IconButton, TextField, Select, MenuItem, Grid, Button, bottomNavigationClasses } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
@@ -8,23 +8,32 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { mainContext } from "./../../App";
+
 import CancelIcon from '@mui/icons-material/Cancel';
 
+const CKCustom = styled(CKEditor)`
+    background-color: #212121 !important;
+    border: 5px solid yellow !important;
+    margin: 500px !important;
+
+    & .ck-editor__editable {
+        background-color: #212121 !important;
+        border: 5px solid yellow;
+        margin: 100px;
+        display: none;
+    }
+`
+
 const AddArticle = () => {
+    const [form, setForm] = useState({});
+    const [tempImage, setTempImage] = useState({});
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        title: "",
-        desc: "",
-        url: "",
-        category: "",
-        thumbnail: "",
-        banner: ""
-    });
-    const [tempImage, setTempImage] = useState({})
+    const {themeMode} = useContext(mainContext);
 
     const params = useParams();
 
-    useEffect(() => {
+    useEffect(() => {        
         axios.get(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`)
             .then(resp => {
                 setForm(resp.data.data)
@@ -32,9 +41,6 @@ const AddArticle = () => {
                     thumbnail: resp.data.data.thumbnail,
                     banner: resp.data.data.banner
                 })
-                setTimeout(() => {
-                    console.log(form);
-                }, 5000)
             })
     }, [])
 
@@ -95,9 +101,9 @@ const AddArticle = () => {
                                         tempImage.thumbnail ?
                                             `${process.env.REACT_APP_BASE_API}/upload/${tempImage.thumbnail}`
                                             :
-                                            form.thumbnail.size ?
-                                                URL.createObjectURL(form.thumbnail)
-                                                :
+                                            // form.thumbnail ?
+                                            //     URL.createObjectURL(form.thumbnail)
+                                            //     :
                                                 "https://via.placeholder.com/500"
                                     }
                                 />
@@ -115,9 +121,9 @@ const AddArticle = () => {
                                         tempImage.banner ?
                                             `${process.env.REACT_APP_BASE_API}/upload/${tempImage.banner}`
                                             :
-                                            form.banner.size ?
-                                                URL.createObjectURL(form.banner)
-                                                :
+                                            // form.banner ?
+                                            //     URL.createObjectURL(form.banner)
+                                            //     :
                                                 "https://via.placeholder.com/500"
                                     }
                                 />
@@ -127,20 +133,16 @@ const AddArticle = () => {
                         </label>
                     </Grid>
                 </Grid>
-
+                
                 <TextField value={form.title || ""} onChange={handleFormChange} name="title" variant="outlined" label="Title" size="small" fullWidth className="mb-8" />
 
-                <CKEditor
-                    editor={ClassicEditor}
-                    // data="Description Here <br/><br/><br/><br/><br/>"
-                    // data={form.desc}
-                    value={form.desc || ""} 
-                    onChange={(event, editor) => {
-                        const data = editor.getData();
-                        // console.log({ event, editor, data });
-                        setForm({ ...form, desc: data })
-                    }}
-                />
+                <div className={themeMode}>
+                    <CKCustom                    
+                        editor={ClassicEditor}
+                        data={form.desc}
+                        onChange={(e, editor) => setForm(prev => ({ ...prev, desc: editor.getData() })) }
+                    />
+                </div>
 
                 <Select value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth className="my-8" >
                     <MenuItem value="Art"> Art </MenuItem>
