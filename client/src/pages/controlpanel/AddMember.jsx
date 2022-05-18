@@ -41,29 +41,6 @@ const AddMember = () => {
     const handleSubmit = e => {
         e.preventDefault()
 
-        // document.cookie = "test=abc"
-        // document.cookie = `referral_key=hello;max-age=604800;domain=example.com`
-
-        // console.log(document.cookie);
-
-        // fetch(`${process.env.REACT_APP_BASE_API}/member`, {
-        //     method: 'POST', // or 'PUT'
-        //     // credentials: "include",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(form),
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log('Success:', data);
-        //     })
-        //     .catch((error) => {
-        //         console.error('Error:', error);
-        //     });
-
-        // return
-
         axios.post(`${process.env.REACT_APP_BASE_API}/api/member/register`, form)
             .then(resp => {
                 toast.dismiss();

@@ -33,9 +33,9 @@ const ArticleCard = ({ article }) => {
                 <Typography align="center" color="text.light" className="text-xs truncate flex justify-between">
                     <span>
                         Created at : {article.createdAtDateTime.split(" ")[0]}
-                    </span>
+                    </span> 
                     <span>
-                        Post By : {article.createdBy ? article.createdBy.username : "-"}
+                        {article.createdBy && `Post By : ${article.createdBy.username}`}
                     </span>
                 </Typography>
             </CardContent>

@@ -18,12 +18,7 @@ const handleInputAdornment = (handleFor, isPasswordHidden, setIsPasswordHidden) 
                     })
                 }}
             >
-                {
-                    isPasswordHidden[handleFor] ?
-                        <VisibilityOffIcon />
-                        :
-                        <VisibilityIcon />
-                }
+                { isPasswordHidden[handleFor] ? <VisibilityOffIcon /> : <VisibilityIcon /> }
             </IconButton>
         </InputAdornment>
     )

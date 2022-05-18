@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Typography, TextField, Button, IconButton } from "@mui/material";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { mainContext } from "./../../App";
 
 import InputAdornment from '@mui/material/InputAdornment';
@@ -11,7 +10,6 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import KeyIcon from '@mui/icons-material/Key';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
-import { Navigate } from "react-router-dom";
 
 const LoginBg = styled.main`
     display: flex;
@@ -40,11 +38,9 @@ const LoginBg = styled.main`
 const LoginForm = styled.form`
     width: 100%;
     max-width: 500px;
-    // min-height: 500px;
     text-align: center;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 7px;
-    // border: 5px solid rgba(255, 255, 255, 0.1);
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.1);
     padding: 2rem;
     margin: 2rem;
@@ -134,12 +130,7 @@ const Login = () => {
                             endAdornment: (
                                 <InputAdornment position="start">
                                     <IconButton onClick={() => setIsPasswordHidden(isPasswordHidden ? false : true)}>
-                                        {
-                                            isPasswordHidden ?
-                                                <VisibilityOffIcon color="light" />
-                                                :
-                                                <VisibilityIcon color="light" />
-                                        }
+                                        { isPasswordHidden ? <VisibilityOffIcon color="light" /> : <VisibilityIcon color="light" /> }
                                     </IconButton>
                                 </InputAdornment>
                             )

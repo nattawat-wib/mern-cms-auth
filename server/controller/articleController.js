@@ -23,7 +23,7 @@ exports.gerAllArticle = async (req, res) => {
         if (req.query.search) query.title = { $regex: req.query.search }
         
         const allArticle = await Article.find(query).populate("createdBy");
-
+        
         res.status(200).json({
             status: "success",
             msg: "",

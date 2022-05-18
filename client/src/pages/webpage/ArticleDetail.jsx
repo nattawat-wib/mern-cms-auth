@@ -26,8 +26,6 @@ const ArticleDetail = () => {
     const { articleUrl } = useParams();
     const [article, setArticle] = useState({});
 
-    // console.log(articleUrl);
-
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_BASE_API}/api/article/${articleUrl}`)
             .then(resp => setArticle(resp.data.data))
@@ -45,7 +43,7 @@ const ArticleDetail = () => {
                     >
                         {article.title}
                     </Typography>
-                    <small className="mt-3 block"> เรื่องและภาพ The Cloud </small>
+                    <small className="mt-3 block"> {article.createdBy && `Post By : ${article.createdBy.username}`} </small>
                 </Box>
 
             </MainBanner>

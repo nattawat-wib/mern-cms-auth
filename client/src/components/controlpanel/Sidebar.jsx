@@ -1,6 +1,7 @@
-import { Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Box } from "@mui/material";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useContext } from "react";
+import { mainContext } from "../../App";
+import { Divider, List, ListItem, ListItemIcon, ListItemText, Box } from "@mui/material";
+import { Link } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 
@@ -9,26 +10,12 @@ import AddBoxIcon from '@mui/icons-material/AddBox';
 import AddReactionIcon from '@mui/icons-material/AddReaction';
 import LockResetIcon from '@mui/icons-material/LockReset';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useContext } from "react";
-import { mainContext } from "../../App";
 
-const PermanentSideBar = styled(Drawer)`
-    & .MuiPaper-root {
-        width: ${({ is_sidebar_open }) => JSON.parse(is_sidebar_open) ? "250px" : "65px"};
-        transition: .3s ease;
-    }
-
-    & .MuiListItemText-root {
-        opacity: ${({ is_sidebar_open }) => JSON.parse(is_sidebar_open) ? 1 : 0};
-        white-space: nowrap;
-        transition: .3s ease;
-    }
-`
+import { PermanentSideBar } from "../../style/controlPanel.style";
 
 const Sidebar = prop => {
     const { isSidebarOpen, setIsSidebarOpen } = prop;
     const { setAuth } = useContext(mainContext);
-    const navigate = useNavigate()
 
     const handleLogout = () => {
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/logout`, { withCredentials: true })

@@ -23,7 +23,7 @@ const ArticleAll = () => {
     }
 
     const handleDeleteArticle = () => {
-        axios.delete(`${process.env.REACT_APP_BASE_API}/api/article/${deleteArticleUrl.trim()}`)
+        axios.delete(`${process.env.REACT_APP_BASE_API}/api/article/${deleteArticleUrl.trim()}`, { withCredentials: true })
             .then(resp => {
                 getArticle()
                 setIsDialogOpen(false)

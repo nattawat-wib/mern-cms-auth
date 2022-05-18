@@ -1,3 +1,4 @@
+import myJson from "./../../data";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Box, Typography, Grid, Container, Tab, Tabs } from "@mui/material";
@@ -8,6 +9,7 @@ import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+const controller = new AbortController();
 
 const MainBanner = styled.section`
     background: center no-repeat url("${({ bg }) => bg ? `${process.env.REACT_APP_BASE_API}/upload/${bg}` : "https://readthecloud.co/wp-content/uploads/2022/04/the-cloud-coffee-club-2-banner.jpg.webp"}");
@@ -104,7 +106,12 @@ const Index = () => {
             .then(resp => {                
                 setRandomArticle(resp.data.data)
             })
-            .catch(console.log)            
+            .catch(console.log)
+
+        // setAllArticle(myJson)
+        // setRandomArticle(myJson)            
+
+        return () => controller.abort()
     }, [])
 
     const handleTabChange = (e, newValue) => setTabValue(newValue);
@@ -132,7 +139,7 @@ const Index = () => {
                                         </Typography>
                                     </Link>
                                     <p className="line-clamp-4" dangerouslySetInnerHTML={{ __html: article.desc }} />
-                                    <small className="mt-3 block"> Post By : {article.createdBy ? article.createdBy.username : "-"} </small>
+                                    <small className="mt-3 block"> {article.createdBy && `Post By : ${article.createdBy.username}`} </small>
                                 </Box>
                             </MainBanner>
                         )
@@ -154,7 +161,7 @@ const Index = () => {
                             <MainBanner key={i} className="flex justify-center items-center" bg={article.banner} height={"30vh"}>
                                 <Box className="text-center text-light relative z-10 px-3">
                                     <p className="line-clamp-2"> {article.title} </p>
-                                    <small className="mt-3 block"> Post By : {article.createdBy ? article.createdBy.username : "-"} </small>
+                                    <small className="mt-3 block"> {article.createdBy && `Post By : ${article.createdBy.username}`} </small>
                                 </Box>
                             </MainBanner>
                         )
