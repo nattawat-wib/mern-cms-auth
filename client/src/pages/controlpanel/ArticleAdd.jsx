@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { TextField, Select, MenuItem, Grid, Button, bottomNavigationClasses } from "@mui/material";
+import { TextField, Select, MenuItem, Grid, Button, InputLabel, IconButton, FormControl } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -8,6 +8,8 @@ import toast, { Toaster } from "react-hot-toast";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { mainContext } from "../../App";
+
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CKCustom = styled(CKEditor)`
     .ck-editor__editable {
@@ -20,14 +22,7 @@ const CKCustom = styled(CKEditor)`
 
 const AddArticle = () => {
     const navigate = useNavigate();
-    const [form, setForm] = useState({
-        title: "",
-        desc: "",
-        url: "",
-        category: "",
-        thumbnail: "",
-        banner: ""
-    });
+    const [form, setForm] = useState({});
     const { themeMode } = useContext(mainContext);
 
     const handleFormChange = e => {
@@ -47,27 +42,16 @@ const AddArticle = () => {
             formData.append(key, form[key]);
         }
 
-        console.log(form);
-
         axios
             .post(`${process.env.REACT_APP_BASE_API}/api/article`, formData, { withCredentials: true })
             .then(resp => {
-                console.log(resp);
-
-                setForm({
-                    title: "",
-                    desc: "",
-                    url: "",
-                    category: "null",
-                    thumbnail: "",
-                    banner: ""
-                });
+                setForm({});
                 toast.success(resp.data.msg);
                 setTimeout(() => { navigate("/cp/article") }, 1500)
             })
             .catch(resp => toast.error(resp.response.data.msg))
     }
-    
+
     return (
         <>
             <Toaster />
@@ -79,9 +63,21 @@ const AddArticle = () => {
                             <figure className="relative" style={{ paddingTop: "50%" }}>
                                 <img className="fit-img" src={form.thumbnail ? URL.createObjectURL(form.thumbnail) : `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`} />
                             </figure>
-                            <input accept="image/*" onChange={handleFormChange} name="thumbnail" hidden id="thumbnailImg" type="file" />
-                            <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="thumbnailImg"> Upload Thumbnail </Button>
                         </label>
+                        <input accept="image/*" onChange={handleFormChange} name="thumbnail" hidden id="thumbnailImg" type="file" />
+                        <div className="flex mt-3">
+                            <Button startIcon={<FileUploadIcon />} className="w-full mr-2" variant="outlined" component="label" htmlFor="thumbnailImg"> Upload Thumbnail </Button>
+                            {
+                                form.thumbnail &&
+                                <IconButton
+                                    color="error"
+                                    onClick={() => setForm(prev => ({ ...prev, thumbnail: null }))}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            }
+                        </div>
+
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <label htmlFor="bannerImg" style={{ cursor: "pointer" }}>
@@ -89,8 +85,19 @@ const AddArticle = () => {
                                 <img className="fit-img" src={form.banner ? URL.createObjectURL(form.banner) : `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`} />
                             </figure>
                             <input accept="image/*" onChange={handleFormChange} name="banner" hidden id="bannerImg" type="file" />
-                            <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="bannerImg"> Upload Banner </Button>
                         </label>
+                        <div className="flex mt-3">
+                            <Button startIcon={<FileUploadIcon />} className="w-full mr-2" variant="outlined" component="label" htmlFor="bannerImg"> Upload Banner </Button>
+                            {
+                                form.banner &&
+                                <IconButton
+                                    color="error"
+                                    onClick={() => setForm(prev => ({ ...prev, banner: null }))}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            }
+                        </div>
                     </Grid>
                 </Grid>
 
@@ -100,21 +107,20 @@ const AddArticle = () => {
                     <CKCustom
                         editor={ClassicEditor}
                         data={form.desc}
-                        onChange={(e, editor) => {
-                            const data = editor.getData();
-                            setForm({ ...form, desc: data })
-                        }}
+                        onChange={(e, editor) => setForm(prev => ({ ...prev, desc: editor.getData() }))}
                     />
                 </div>
-
-                <Select value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth className="my-8" >
-                    <MenuItem value="null"> === Select Category === </MenuItem>
-                    <MenuItem value="Art"> Art </MenuItem>
-                    <MenuItem value="Business"> Business </MenuItem>
-                    <MenuItem value="Travel"> Travel </MenuItem>
-                    <MenuItem value="Interview"> Interview </MenuItem>
-                </Select>
-
+                
+                <FormControl fullWidth className="my-8"> 
+                    <InputLabel id="category-select"> Category </InputLabel>
+                    <Select id="category-select" value={form.category || "Art"} onChange={handleFormChange} name="category" label="Category" size="small" fullWidth >
+                        {/* <MenuItem disabled value=""> === Select Category === </MenuItem> */}
+                        <MenuItem value="Art"> Art </MenuItem>
+                        <MenuItem value="Business"> Business </MenuItem>
+                        <MenuItem value="Travel"> Travel </MenuItem>
+                        <MenuItem value="Interview"> Interview </MenuItem>
+                    </Select>
+                </FormControl>
 
                 <TextField value={form.url || ""} onChange={handleFormChange} name="url" variant="outlined" label="URL" size="small" fullWidth className="mb-8" />
                 <div className="text-right">

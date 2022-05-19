@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { IconButton, TextField, Select, MenuItem, Grid, Button, bottomNavigationClasses } from "@mui/material";
+import { IconButton, TextField, Select, MenuItem, Grid, Button, InputLabel, FormControl } from "@mui/material";
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -10,7 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { mainContext } from "./../../App";
 
-import CancelIcon from '@mui/icons-material/Cancel';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const CKCustom = styled(CKEditor)`
     background-color: #212121 !important;
@@ -29,24 +29,22 @@ const AddArticle = () => {
     const [form, setForm] = useState({});
     const [tempImage, setTempImage] = useState({});
     const navigate = useNavigate();
-    const {themeMode} = useContext(mainContext);
+    const { themeMode } = useContext(mainContext);
 
     const params = useParams();
 
-    useEffect(() => {        
+    useEffect(() => {
         axios.get(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`)
             .then(resp => {
-                setForm(resp.data.data)
                 setTempImage({
                     thumbnail: resp.data.data.thumbnail,
                     banner: resp.data.data.banner
-                })
+                });
+                setForm(resp.data.data);
             })
     }, [])
 
     const handleFormChange = e => {
-        console.log(form);
-        
         if (e.target.type === "file") {
             if (!e.target.files[0].type.startsWith("image")) return toast.error("file upload is allow only image");
             tempImage[e.target.name] = null
@@ -54,6 +52,10 @@ const AddArticle = () => {
         } else {
             setForm({ ...form, [e.target.name]: e.target.value })
         }
+
+        console.log(form);
+        console.log(typeof form.thumbnail);
+        console.log(form.thumbnail);
     }
 
     const handleSubmit = e => {
@@ -66,7 +68,7 @@ const AddArticle = () => {
         console.log("form", form);
 
         axios
-            .patch(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`, formData, {withCredentials: true})
+            .patch(`${process.env.REACT_APP_BASE_API}/api/article/${params.articleUrl}`, formData, { withCredentials: true })
             .then(resp => {
                 toast.success(resp.data.msg);
                 setTimeout(() => { navigate("/cp/article") }, 1500)
@@ -83,34 +85,37 @@ const AddArticle = () => {
                     <Grid item xs={12} sm={6}>
                         <label htmlFor="thumbnailImg" style={{ cursor: "pointer" }}>
                             <figure className="relative" style={{ paddingTop: "50%" }}>
-                                {/* {
-                                    form.thumbnail.size ?
-                                        <IconButton
-                                            onClick={e => setForm({ ...form, thumbnail: "" })}
-                                            color="error"
-                                            className="absolute -top-4 -right-2 z-10"
-                                        >
-                                            <CancelIcon />
-                                        </IconButton>
-                                        :
-                                        ""
-                                } */}
                                 <img
                                     className="fit-img"
                                     src={
                                         tempImage.thumbnail ?
                                             `${process.env.REACT_APP_BASE_API}/upload/${tempImage.thumbnail}`
                                             :
-                                            // form.thumbnail ?
-                                            //     URL.createObjectURL(form.thumbnail)
-                                            //     :
-                                                "https://via.placeholder.com/500"
+                                            form.thumbnail ?
+                                                URL.createObjectURL(form.thumbnail)
+                                                :
+                                                `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`
                                     }
                                 />
                             </figure>
-                            <input accept="image/*" onChange={handleFormChange} name="thumbnail" hidden id="thumbnailImg" type="file" />
-                            <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="thumbnailImg"> Upload Thumbnail </Button>
                         </label>
+                        <input accept="image/*" onChange={handleFormChange} name="thumbnail" hidden id="thumbnailImg" type="file" />
+                        <div className="flex mt-3">
+                            <Button startIcon={<FileUploadIcon />} className="w-full mr-2" variant="outlined" component="label" htmlFor="thumbnailImg"> Upload Thumbnail </Button>
+                            {
+                                form.thumbnail !== null & typeof (form.thumbnail) !== "string" ?
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => {
+                                            setForm(prev => ({ ...prev, thumbnail: null }))
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    :
+                                    ""
+                            }
+                        </div>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <label htmlFor="bannerImg" style={{ cursor: "pointer" }}>
@@ -121,36 +126,53 @@ const AddArticle = () => {
                                         tempImage.banner ?
                                             `${process.env.REACT_APP_BASE_API}/upload/${tempImage.banner}`
                                             :
-                                            // form.banner ?
-                                            //     URL.createObjectURL(form.banner)
-                                            //     :
-                                                "https://via.placeholder.com/500"
+                                            form.banner ?
+                                                URL.createObjectURL(form.banner)
+                                                :
+                                                `https://via.placeholder.com/500/${themeMode === "dark" ? "333/969696" : ""}`
                                     }
                                 />
                             </figure>
-                            <input accept="image/*" onChange={handleFormChange} name="banner" hidden id="bannerImg" type="file" />
-                            <Button startIcon={<FileUploadIcon />} className="mt-3 w-full" variant="outlined" component="label" htmlFor="bannerImg"> Upload Banner </Button>
                         </label>
+                        <input accept="image/*" onChange={handleFormChange} name="banner" hidden id="bannerImg" type="file" />
+                        <div className="flex mt-3">
+                            <Button startIcon={<FileUploadIcon />} className="w-full mr-2" variant="outlined" component="label" htmlFor="bannerImg"> Upload Banner </Button>
+                            {
+                                form.banner !== null & typeof (form.banner) !== "string" ?
+                                    <IconButton
+                                        color="error"
+                                        onClick={() => {
+                                            setForm(prev => ({ ...prev, banner: null }))
+                                        }}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    :
+                                    ""
+                            }
+                        </div>
                     </Grid>
                 </Grid>
-                
+
                 <TextField value={form.title || ""} onChange={handleFormChange} name="title" variant="outlined" label="Title" size="small" fullWidth className="mb-8" />
 
                 <div className={themeMode}>
-                    <CKCustom                    
+                    <CKCustom
                         editor={ClassicEditor}
                         data={form.desc}
-                        onChange={(e, editor) => setForm(prev => ({ ...prev, desc: editor.getData() })) }
+                        onChange={(e, editor) => setForm(prev => ({ ...prev, desc: editor.getData() }))}
                     />
                 </div>
 
-                <Select value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth className="my-8" >
-                    <MenuItem value="Art"> Art </MenuItem>
-                    <MenuItem value="Business"> Business </MenuItem>
-                    <MenuItem value="Travel"> Travel </MenuItem>
-                    <MenuItem value="Interview"> Interview </MenuItem>
-                </Select>
-
+                <FormControl className="my-8" fullWidth>
+                    <InputLabel id="category-select"> Category </InputLabel>
+                    <Select id="category-select" value={form.category || ""} onChange={handleFormChange} color="primary" name="category" label="Category" size="small" fullWidth>
+                        <MenuItem value="Art"> Art </MenuItem>
+                        <MenuItem value="Business"> Business </MenuItem>
+                        <MenuItem value="Travel"> Travel </MenuItem>
+                        <MenuItem value="Interview"> Interview </MenuItem>
+                    </Select>
+                </FormControl>
 
                 <TextField value={form.url || ""} onChange={handleFormChange} name="url" variant="outlined" label="URL" size="small" fullWidth className="mb-8" />
                 <div className="text-right">
