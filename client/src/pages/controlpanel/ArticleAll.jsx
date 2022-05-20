@@ -13,7 +13,12 @@ const ArticleAll = () => {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
     useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
         getArticle()
+
+        return () => source.cancel()        
     }, [])
 
     const getArticle = () => {
@@ -22,7 +27,7 @@ const ArticleAll = () => {
             .catch(console.log)
     }
 
-    const handleDeleteArticle = () => {
+    const handleDeleteArticle = () => {        
         axios.delete(`${process.env.REACT_APP_BASE_API}/api/article/${deleteArticleUrl.trim()}`, { withCredentials: true })
             .then(resp => {
                 getArticle()

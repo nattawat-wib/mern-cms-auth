@@ -111,16 +111,13 @@ const AddArticle = () => {
                     />
                 </div>
                 
-                <FormControl fullWidth className="my-8"> 
-                    <InputLabel id="category-select"> Category </InputLabel>
-                    <Select id="category-select" value={form.category || "Art"} onChange={handleFormChange} name="category" label="Category" size="small" fullWidth >
-                        {/* <MenuItem disabled value=""> === Select Category === </MenuItem> */}
-                        <MenuItem value="Art"> Art </MenuItem>
-                        <MenuItem value="Business"> Business </MenuItem>
-                        <MenuItem value="Travel"> Travel </MenuItem>
-                        <MenuItem value="Interview"> Interview </MenuItem>
-                    </Select>
-                </FormControl>
+                <TextField select value={form.category || ""} className="my-8" onChange={handleFormChange} name="category" label="Category" size="small" fullWidth >
+                    <MenuItem value="" disabled> Select Category </MenuItem>
+                    <MenuItem value="Art"> Art </MenuItem>
+                    <MenuItem value="Business"> Business </MenuItem>
+                    <MenuItem value="Travel"> Travel </MenuItem>
+                    <MenuItem value="Interview"> Interview </MenuItem>
+                </TextField>
 
                 <TextField value={form.url || ""} onChange={handleFormChange} name="url" variant="outlined" label="URL" size="small" fullWidth className="mb-8" />
                 <div className="text-right">

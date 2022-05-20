@@ -30,8 +30,9 @@ exports.isLogin = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {    
     const logoutMember = await Member.findOne({ token: req.cookies.token });
-    
+
     logoutMember.token = undefined;
+    
     await logoutMember.save({ validateBeforeSave: false })
 
     res.clearCookie("token");

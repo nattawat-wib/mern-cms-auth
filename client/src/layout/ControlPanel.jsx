@@ -31,36 +31,67 @@ const ControlPanel = () => {
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { themeMode, auth, setAuth } = useContext(mainContext);
-    
-    useEffect(() => {        
+
+    useEffect(() => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
-            .then(resp => setAuth(resp.data.data))
+            .then(resp => {
+                console.log("axios then");
+                
+                setAuth(prev => {
+                    console.log("prev", prev);
+                    return {...prev, ...resp.data.data} 
+                })
+                
+                console.log("axios then auth", auth);
+
+                if (location.pathname !== "/cp" && !resp.data.data) {
+                    console.log(1, location.pathname, auth);
+                    navigate("/cp");
+                }
+                else if (location.pathname === "/cp" && resp.data.data) {
+                    console.log(2, location.pathname, auth);
+                    navigate("/cp/article");
+                }                
+            })
             .catch(err => {
                 console.log("Error:" + err);
                 setAuth(null)
             });
+
+        return () => source.cancel()
     }, [])
 
     useEffect(() => {
-             if(!auth && location.pathname !== "/cp") { navigate("/cp");}
-        else if(auth && location.pathname === "/cp")  { navigate("/cp/article");}
+        if (location.pathname !== "/cp" && !auth) {
+            console.log(1, location.pathname, auth);
+            navigate("/cp");
+        }
+        else if (location.pathname === "/cp" && auth) {
+            console.log(2, location.pathname, auth);
+            navigate("/cp/article");
+        }
     }, [location, auth])
+
+    console.log("auth", auth);
 
     return (
         <>
             {
                 location.pathname !== "/cp" ?
-                <>
-                    <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-                    <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
-                    <PageWrapper is_sidebar_open={isSidebarOpen.toString()} theme_mode={themeMode}>
-                        <CardWrapper>
-                            <Outlet />
-                        </CardWrapper>
-                    </PageWrapper>
-                </>
-                :
-                <Outlet />
+                    <>
+                        <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+                        <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
+                        <PageWrapper is_sidebar_open={isSidebarOpen.toString()} theme_mode={themeMode}>
+                            <CardWrapper>
+                                <Outlet />
+                            </CardWrapper>
+                        </PageWrapper>
+                    </>
+                    :
+                    <Outlet />
             }
         </>
     )

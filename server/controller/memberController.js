@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
         const isPasswordCorrect = await existMember.isPasswordCorrect(req.body.password, existMember.password)
         if (!isPasswordCorrect) throw "username or password is not correct";
 
-        const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT, {expiresIn: "15m"});
+        const token = await jwt.sign({ _id: existMember._id }, process.env.SECRET_JWT);
 
         existMember.token = token
         await existMember.save({ validateBeforeSave: false })
