@@ -60,7 +60,7 @@ const ControlPanel = () => {
         console.log("location.pathname", location.pathname);
         console.log("auth fx2", auth);
 
-        if (isLoading) return;
+        // if (isLoading) return;
 
         if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) {
             console.log(1);
@@ -72,7 +72,7 @@ const ControlPanel = () => {
             navigate("/cp/article");
         }
 
-    }, [location, isLoading])
+    }, [location, auth])
 
     console.log("auth", auth);
 
