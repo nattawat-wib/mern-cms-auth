@@ -4,6 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const xss = require("xss-clean");
 const sanitize = require("express-mongo-sanitize");
+const path = require("path");
 
 const memberRouter = require("./routes/memberRoute");
 const articleRouter = require("./routes/articleRoute");
@@ -27,6 +28,14 @@ app.use(sanitize());
 
 app.use("/api/member", memberRouter);
 app.use("/api/article", articleRouter)
+
+// if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "client/build")));
+
+    app.use("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "client/build/index.html"));
+    })
+// }
 
 app.listen(port, () => {
     console.log(`server start at port ${port}`);
