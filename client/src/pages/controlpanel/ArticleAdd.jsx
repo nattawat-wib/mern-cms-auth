@@ -106,7 +106,7 @@ const AddArticle = () => {
                 <div className={themeMode}>
                     <CKCustom
                         editor={ClassicEditor}
-                        data={form.desc}
+                        data={form.desc || ""}
                         onChange={(e, editor) => setForm(prev => ({ ...prev, desc: editor.getData() }))}
                     />
                 </div>

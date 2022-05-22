@@ -30,57 +30,58 @@ const ControlPanel = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { themeMode, auth, setAuth } = useContext(mainContext);
 
     useEffect(() => {
+        console.log("fx 1");
+        // setIsLoading(true)
+
         const CancelToken = axios.CancelToken;
         const source = CancelToken.source();
 
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => {
-                console.log("axios then");
-                
-                setAuth(prev => {
-                    console.log("prev", prev);
-                    return {...prev, ...resp.data.data} 
-                })
-                
-                console.log("axios then auth", auth);
-
-                if (location.pathname !== "/cp" && !resp.data.data) {
-                    console.log(1, location.pathname, auth);
-                    navigate("/cp");
-                }
-                else if (location.pathname === "/cp" && resp.data.data) {
-                    console.log(2, location.pathname, auth);
-                    navigate("/cp/article");
-                }                
+                setAuth(prev => ({ ...prev, ...resp.data.data }))
+                setIsLoading(false)
             })
             .catch(err => {
                 console.log("Error:" + err);
                 setAuth(null)
+                setIsLoading(false)
             });
 
         return () => source.cancel()
     }, [])
 
     useEffect(() => {
-        if (location.pathname !== "/cp" && !auth) {
-            console.log(1, location.pathname, auth);
+        console.log("fx 2");
+        console.log("isLoading", isLoading);
+        console.log("location.pathname", location.pathname);
+        console.log("auth fx2", auth);
+
+        if (isLoading) return;
+
+        if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) {
+            console.log(1);
             navigate("/cp");
+            console.log("go to /cp");
         }
-        else if (location.pathname === "/cp" && auth) {
-            console.log(2, location.pathname, auth);
+        else if ((location.pathname === "/cp" || location.pathname === "/cp/") && auth) {
+            console.log(2);
             navigate("/cp/article");
         }
-    }, [location, auth])
+
+    }, [location, isLoading])
 
     console.log("auth", auth);
 
     return (
         <>
             {
-                location.pathname !== "/cp" ?
+                (location.pathname === "/cp" || location.pathname === "/cp/") ?
+                    <Outlet />
+                    :
                     <>
                         <Navbar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
                         <Sidebar isSidebarOpen={isSidebarOpen} setIsSidebarOpen={setIsSidebarOpen} />
@@ -90,8 +91,6 @@ const ControlPanel = () => {
                             </CardWrapper>
                         </PageWrapper>
                     </>
-                    :
-                    <Outlet />
             }
         </>
     )
