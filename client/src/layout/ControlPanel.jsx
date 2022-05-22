@@ -34,7 +34,7 @@ const ControlPanel = () => {
     const { themeMode, auth, setAuth } = useContext(mainContext);
 
     useEffect(() => {
-        console.log("fx 1");
+        // console.log("fx 1");
         // setIsLoading(true)
 
         const CancelToken = axios.CancelToken;
@@ -55,26 +55,23 @@ const ControlPanel = () => {
     }, [])
 
     useEffect(() => {
-        console.log("fx 2");
-        console.log("isLoading", isLoading);
-        console.log("location.pathname", location.pathname);
-        console.log("auth fx2", auth);
+        // console.log("fx 2");s
 
         // if (isLoading) return;
 
         if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) {
-            console.log(1);
+            // console.log(1);
             navigate("/cp");
-            console.log("go to /cp");
+            // console.log("go to /cp");
         }
         else if ((location.pathname === "/cp" || location.pathname === "/cp/") && auth) {
-            console.log(2);
+            // console.log(2);
             navigate("/cp/article");
         }
 
     }, [location, auth])
 
-    console.log("auth", auth);
+    // console.log("auth", auth);
 
     return (
         <>
