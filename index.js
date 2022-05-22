@@ -30,11 +30,11 @@ app.use("/api/member", memberRouter);
 app.use("/api/article", articleRouter)
 
 // if (process.env.NODE_ENV === "production") {
-    // app.use(express.static(path.join(__dirname, "build", "/client/build")));
+    app.use(express.static("/client/build"));
 
-    app.use("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "build", "index.html"));
-    })
+    // app.use("*", (req, res) => {
+    //     res.sendFile(path.join(__dirname, "build", "index.html"));
+    // })
 // }
 
 app.listen(port, () => {
