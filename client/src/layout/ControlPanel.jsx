@@ -43,7 +43,7 @@ const ControlPanel = () => {
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => {
                 console.log("resp verify-token", resp);
-                
+
                 setAuth(prev => ({ ...prev, ...resp.data.data }))
                 setIsLoading(false)
             })
@@ -59,7 +59,11 @@ const ControlPanel = () => {
     useEffect(() => {
         // console.log("fx 2");s
 
-        // if (isLoading) return;
+        console.log("auth", auth);
+        console.log("location.pathname", location.pathname);
+        console.log("isLoading", isLoading);
+
+        if (isLoading) return;
 
         if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) {
             // console.log(1);

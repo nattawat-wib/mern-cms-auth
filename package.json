@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build"
+    "heroku-postbuild-noused": "cd client && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
