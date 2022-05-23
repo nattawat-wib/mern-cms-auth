@@ -57,11 +57,11 @@ const ControlPanel = () => {
     }, [])
 
     useEffect(() => {
-        console.log("useEffect 2");
+        // console.log("useEffect 2");
 
-        console.log("location.pathname : ", location.pathname);
-        console.log("auth : ", auth);
-        console.log("isLoading : ", isLoading);
+        // console.log("location.pathname : ", location.pathname);
+        // console.log("auth : ", auth);
+        // console.log("isLoading : ", isLoading);
 
         if (isLoading) return;
 
