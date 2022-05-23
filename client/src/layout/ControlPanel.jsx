@@ -34,7 +34,7 @@ const ControlPanel = () => {
     const { themeMode, auth, setAuth } = useContext(mainContext);
 
     useEffect(() => {
-        // console.log("fx 1");
+        // console.log("useEffect 1");
         // setIsLoading(true)
 
         const CancelToken = axios.CancelToken;
@@ -42,7 +42,7 @@ const ControlPanel = () => {
 
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => {
-                console.log("resp verify-token", resp);
+                // console.log("axios then", resp);
 
                 setAuth(prev => ({ ...prev, ...resp.data.data }))
                 setIsLoading(false)
@@ -57,27 +57,20 @@ const ControlPanel = () => {
     }, [])
 
     useEffect(() => {
-        // console.log("fx 2");s
+        console.log("useEffect 2");
 
-        console.log("auth", auth);
-        console.log("location.pathname", location.pathname);
-        console.log("isLoading", isLoading);
+        console.log("location.pathname : ", location.pathname);
+        console.log("auth : ", auth);
+        console.log("isLoading : ", isLoading);
 
         if (isLoading) return;
 
-        if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) {
-            // console.log(1);
-            navigate("/cp");
-            // console.log("go to /cp");
-        }
-        else if ((location.pathname === "/cp" || location.pathname === "/cp/") && auth) {
-            // console.log(2);
-            navigate("/cp/article");
-        }
+        if ((location.pathname !== "/cp" || location.pathname !== "/cp/") && !auth) navigate("/cp");
+        else if ((location.pathname === "/cp" || location.pathname === "/cp/") && auth) navigate("/cp/article");
 
-    }, [location, auth])
+    }, [location, auth, isLoading])
 
-    // console.log("auth", auth);
+    // console.log("render component", auth);
 
     return (
         <>
