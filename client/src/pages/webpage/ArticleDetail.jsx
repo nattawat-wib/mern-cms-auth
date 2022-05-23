@@ -51,14 +51,14 @@ const ArticleDetail = () => {
                 <Container className="p-5">
                     <Typography className="line-clamp-1" color="text.light">
                         <Link to="/">
-                            Home
+                              Home  
                         </Link>
-                        /
+                         / 
                         <Link to={`/article/${article.category}`}>
-                            {article.category}
+                               {article.category}   
                         </Link>
-                        /
-                        {article.title}
+                         / 
+                           {article.title}    
                     </Typography>
                     <Typography color="text.light"> Created at : {article.createdAtDateTime} </Typography>
                     <Typography color="text.light"> Post By : {article.createdBy ? article.createdBy.username : "-"} </Typography>
