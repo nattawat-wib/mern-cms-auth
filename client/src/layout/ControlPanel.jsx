@@ -42,6 +42,8 @@ const ControlPanel = () => {
 
         axios.get(`${process.env.REACT_APP_BASE_API}/api/member/verify-token`, { withCredentials: true })
             .then(resp => {
+                console.log("resp verify-token", resp);
+                
                 setAuth(prev => ({ ...prev, ...resp.data.data }))
                 setIsLoading(false)
             })
